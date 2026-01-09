@@ -24,11 +24,18 @@
       font-family:'Fredoka One', cursive;
       text-align:left;
     }
-    @media print {
-      nav { display:none; } /* tombol filter tidak ikut tercetak */
-      a[href]:after { content:none !important; } /* hilangkan URL tambahan */
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    }
+  @media print {
+  nav, footer { display:none; } /* sembunyikan navigasi/footer */
+  a[href]:after, a[href]::after { content:"" !important; } /* hilangkan URL tambahan */
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  th, .subheader td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
   </style>
 </head>
 <body>
