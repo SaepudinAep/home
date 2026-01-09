@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>PDF Merger Tool</title>
+<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Roboto',sans-serif; margin:0; background:#f5f5f5; }
+  header {
+    background: linear-gradient(90deg,#4d97ff,#ffab19);
+    color:#fff; padding:15px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  header h1 { font-family:'Fredoka One',cursive; font-size:24px; margin:0; }
+  header nav a {
+    background:#ffab19; color:#fff; text-decoration:none;
+    padding:8px 14px; border-radius:6px; font-weight:bold;
+  }
+  header nav a:hover { background:#4d97ff; }
+
+  main { padding:1cm; }
+  h2 { font-family:'Fredoka One'; color:#333; }
+
+  input, button { margin:10px 0; }
+  button {
+    background:#4d97ff; color:#fff; border:none;
+    padding:10px 20px; border-radius:6px; cursor:pointer;
+    font-weight:bold;
+  }
+  button:hover { background:#ffab19; }
+
+  ul { list-style:none; padding:0; }
+  li { background:#fff3d6; margin:5px 0; padding:6px; border:1px solid #ccc;
+       display:flex; justify-content:space-between; align-items:center;
+       font-size:14px; }
+  .controls button {
+    background:#ffab19; color:#fff; border:none;
+    padding:4px 8px; border-radius:4px; cursor:pointer;
+    font-size:12px; margin-left:5px;
+  }
+  .controls button:hover { background:#4d97ff; }
+</style>
+</head>
+<body>
+<header>
+  <h1>PDF Merger Tool</h1>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<main>
+  <h2>Gabungkan File PDF</h2>
+  <input type="file" id="pdfFiles" multiple accept="application/pdf" onchange="showFiles()">
+  <ul id="fileList"></ul>
+  <button onclick="mergePDFs()">Gabungkan PDF</button>
+</main>
+
+<script>
+let files = [];
+
+function showFiles() {
+  const input = document.getElementById('pdfFiles');
+  files = Array.from(input.files);
+  renderList();
+}
+
+function renderList() {
+  const list = document.getElementById('fileList');
+  list.innerHTML = "";
+  files.forEach((file, index) => {
+    const li = document.createElement("li");
+    li.textContent = file.name;
+    const controls = document.createElement("div");
+    controls.className = "controls";
+    if(index>0){
+      const upBtn = document.createElement("button");
+      upBtn.textContent="↑";
+      upBtn.onclick=()=>moveUp(index);
+      controls.appendChild(upBtn);
+    }
+    if(index<files.length-1){
+      const downBtn = document.createElement("button");
+      downBtn.textContent="↓";
+      downBtn.onclick=()=>moveDown(index);
+      controls.appendChild(downBtn);
+    }
+    li.appendChild(controls);
+    list.appendChild(li);
+  });
+}
+
+function moveUp(i){
+  [files[i-1], files[i]] = [files[i], files[i-1]];
+  renderList();
+}
+function moveDown(i){
+  [files[i], files[i+1]] = [files[i+1], files[i]];
+  renderList();
+}
+
+async function mergePDFs() {
+  if(files.length<2){ alert("Pilih minimal 2 file PDF!"); return; }
+  const mergedPdf = await PDFLib.PDFDocument.create();
+  for(const file of files){
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach(page => mergedPdf.addPage(page));
+  }
+  const mergedPdfBytes = await mergedPdf.save();
+  const blob = new Blob([mergedPdfBytes], { type:"application/pdf" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "gabungan.pdf";
+  link.click();
+}
+</script>
+</body>
+</html>
