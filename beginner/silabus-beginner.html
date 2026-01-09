@@ -24,20 +24,34 @@
       font-family:'Fredoka One', cursive;
       text-align:left;
     }
-  @media print {
-  /* sembunyikan navigasi & footer */
-  nav, footer { display:none; }
-
-  /* hilangkan URL tambahan di belakang link */
-  a[href]::after {
-    content: "" !important;
-  }
-
-  /* jaga warna tetap tercetak */
-  body, th, .subheader td {
+ @media print {
+  nav, footer { display:none; } /* sembunyikan navigasi/footer */
+  a[href]::after { content:"" !important; } /* hilangkan URL tambahan */
+  body {
+    margin: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+  table {
+    table-layout: fixed;
+    width: 210mm;            /* penuh ukuran A4 portrait (210mm lebar) */
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+
+  th, td {
+    padding: 4mm;            /* padding pakai mm */
+    word-wrap: break-word;
+  }
+
+  /* Tentukan lebar kolom fix */
+  th:nth-child(1), td:nth-child(1) { width: 20mm; }  /* Pertemuan */
+  th:nth-child(2), td:nth-child(2) { width: 40mm; }  /* Nama Robot */
+  th:nth-child(3), td:nth-child(3) { width: 150mm; } /* Uraian */
+
+  tr { page-break-inside: avoid; }
+}
 
   /* tata letak tabel fix agar kolom tidak berubah */
   table {
