@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Worksheet Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body { font-family:'Roboto',sans-serif; margin:0; background:#fdfdfd; color:#333; }
+    header {
+      background: linear-gradient(90deg,#4d97ff,#00c896);
+      color:white;
+      padding:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    header h1 {
+      font-family:'Fredoka One',cursive;
+      font-size:28px;
+      margin:0;
+    }
+    header nav a {
+      background:#ffab19;
+      color:#fff;
+      text-decoration:none;
+      padding:8px 16px;
+      border-radius:6px;
+      font-weight:bold;
+      transition:background 0.2s;
+    }
+    header nav a:hover { background:#4d97ff; }
+
+    form {
+      background:#ffab19;
+      padding:20px;
+      border-radius:10px;
+      margin:20px;
+    }
+    form h3 { margin:10px 0 5px; font-family:'Fredoka One'; color:#4d97ff; }
+    button {
+      background:#4d97ff;
+      color:white;
+      border:none;
+      padding:10px 20px;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:bold;
+      margin-top:15px;
+    }
+    button:hover { background:#00c896; }
+
+    .page { height:267mm; display:flex; flex-direction:column; margin:20px; background:#fff; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .page-header { flex:0 0 auto; text-align:center; padding:15px; border-bottom:3px solid #00c896; }
+    .page-header h2 { font-family:'Fredoka One'; color:#4d97ff; margin:0; }
+    .page-header .subjudul { font-size:14px; color:#555; }
+    .page-content { flex:1; display:flex; padding:20px; }
+    .worksheet { flex:1; display:grid; grid-template-columns:0.6fr 2fr 2fr 0.6fr 2fr 2fr; gap:12px; }
+    .cell { padding:6px 8px; font-size:16px; background:#fff; border-radius:6px; box-sizing:border-box; }
+    .nomor { font-weight:bold; color:#00c896; text-align:right; display:flex; align-items:center; justify-content:flex-end; }
+    .soal { font-weight:normal; color:#4d97ff; display:flex; align-items:center; }
+    .coretan { border:1px solid #ffab19; background:#fff3d6; }
+    footer { background:#fff3d6; text-align:center; padding:15px; font-size:14px; color:#333; }
+    @media print { form, header, footer { display:none; } body{margin:0;} @page{size:A4; margin:15mm;} }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Math Worksheet Generator</h1>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <form>
+    <h3>Jumlah Soal:</h3>
+    <input type="number" id="jumlah" value="20">
+    <h3>Pilih Operasi:</h3>
+    <label><input type="checkbox" name="opsi" value="add" checked> Penjumlahan</label>
+    <label><input type="checkbox" name="opsi" value="sub" checked> Pengurangan</label>
+    <label><input type="checkbox" name="opsi" value="mul" checked> Perkalian</label>
+    <label><input type="checkbox" name="opsi" value="div" checked> Pembagian</label>
+    <br><br>
+    <button type="button" onclick="generateWorksheet()">Generate Worksheet</button>
+  </form>
+
+  <div id="worksheetContainer"></div>
+
+  <footer>
+    © 2026 Math Worksheet Generator • Dibuat untuk latihan belajar
+  </footer>
+
+  <script>
+    function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+    function generateWorksheet(){
+      const jumlah=parseInt(document.getElementById('jumlah').value);
+      const opsis=Array.from(document.querySelectorAll('input[name="opsi"]:checked')).map(el=>el.value);
+      const container=document.getElementById('worksheetContainer');
+      container.innerHTML="";
+      if(opsis.length===0){container.innerHTML="<p style='color:red;'>Silakan pilih minimal satu operasi.</p>";return;}
+      const semuaSoal=[];
+      for(let i=0;i<jumlah;i++){
+        let a,b,simbol,operasi=opsis[Math.floor(Math.random()*opsis.length)];
+        if(operasi==="add"){a=rand(10,99);b=rand(10,99);simbol="+";}
+        else if(operasi==="sub"){a=rand(10,99);b=rand(10,99);simbol="−";}
+        else if(operasi==="mul"){a=rand(1,9);b=rand(1,9);simbol="×";}
+        else if(operasi==="div"){const hasil=rand(1,50);b=rand(2,9);a=hasil*b;simbol="÷";}
+        const isiSoal=`${a} ${simbol} ${b} = .....`;
+        semuaSoal.push({nomor:i+1,teks:isiSoal});
+      }
+      const perHalaman=20;
+      const totalHalaman=Math.ceil(jumlah/perHalaman);
+      for(let h=0;h<totalHalaman;h++){
+        const halamanSoal=semuaSoal.slice(h*perHalaman,(h+1)*perHalaman);
+        const half=Math.ceil(halamanSoal.length/2);
+        const soalA=halamanSoal.slice(0,half);
+        const soalB=halamanSoal.slice(half);
+        const pageEl=document.createElement('div');pageEl.className='page';
+        const headerEl=document.createElement('div');headerEl.className='page-header';
+        headerEl.innerHTML=`<h2>Lembar Latihan</h2><div class="subjudul">Nama: ________ &nbsp;&nbsp; Tanggal: ________</div>`;
+        pageEl.appendChild(headerEl);
+        const contentEl=document.createElement('div');contentEl.className='page-content';
+        const gridEl=document.createElement('div');gridEl.className='worksheet';
+        const rows=Math.max(soalA.length,soalB.length);
+        for(let i=0;i<rows;i++){
+          const noA=soalA[i]?soalA[i].nomor:"";
+          const teksA=soalA[i]?soalA[i].teks:"";
+          const noB=soalB[i]?soalB[i].nomor:"";
+          const teksB=soalB[i]?soalB[i].teks:"";
+          gridEl.innerHTML+=`
+            <div class="cell nomor">${noA}</div>
+            <div class="cell soal">${teksA}</div>
+            <div class="cell coretan"></div>
+            <div class="cell nomor">${noB}</div>
+            <div class="cell soal">${teksB}</div>
+            <div class="cell coretan"></div>`;
+        }
+        contentEl.appendChild(gridEl);
+        pageEl.appendChild(contentEl);
+        container.appendChild(pageEl);
+      }
+    }
+  </script>
+</body>
+</html>
