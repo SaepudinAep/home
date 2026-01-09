@@ -3,85 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>Silabus Kiddy Robotics</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
   <style>
-    body { font-family:'Roboto',sans-serif; margin:0; background:#fdfdfd; color:#333; }
-    header { background: linear-gradient(90deg,#4d97ff,#00c896); color:white; padding:30px; text-align:center; }
-    header h1 { font-family:'Fredoka One',cursive; font-size:36px; margin:0; }
-    header p { font-size:16px; margin-top:8px; }
-
-    nav { text-align:center; margin:20px; }
-    .nav-button {
+    @page { size: A4; margin: 18mm; }
+    body { font-family: 'Roboto', sans-serif; font-size: 11pt; color:#333; margin:0; }
+    h1 { text-align:center; font-family:'Fredoka One',cursive; color:#4d97ff; margin:20px 0 10px; }
+    nav { text-align:center; margin:15px 0; }
+    nav button {
       background:#ffab19; color:#fff; border:none; border-radius:6px;
       padding:8px 14px; margin:0 4px; font-family:'Fredoka One'; cursor:pointer;
     }
-    .nav-button:hover { background:#4d97ff; }
-
-    table { width:100%; border-collapse:collapse; margin:20px auto; max-width:1000px; }
+    nav button:hover { background:#4d97ff; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
     th, td { border:1px solid #999; padding:8px; vertical-align:top; }
-    th { background:#4d97ff; color:#fff; font-family:'Fredoka One'; }
+    th { background:#4d97ff !important; color:#fff !important; font-family:'Fredoka One'; }
     tr:nth-child(even) td { background:#f9f9f9; }
     .subheader td {
-      background:#ffab19; color:#fff; font-weight:bold;
-      font-family:'Fredoka One'; text-align:left;
+      background:#ffab19 !important;
+      color:#fff !important;
+      font-weight:bold;
+      font-family:'Fredoka One', cursive;
+      text-align:left;
     }
-
-    footer { background:#4d97ff; color:#fff; text-align:center; padding:20px; margin-top:40px; }
-    footer a { color:#fff; text-decoration:none; font-family:'Fredoka One'; }
-    footer a:hover { text-decoration:underline; }
-
     @media print {
-      nav, footer { display:none; } /* tombol filter & footer tidak ikut tercetak */
+      nav { display:none; } /* tombol filter tidak ikut tercetak */
       a[href]:after { content:none !important; } /* hilangkan URL tambahan */
       body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Silabus Kiddy Robotics</h1>
-    <p>Daftar materi pertemuan Semester 1 & 2</p>
-  </header>
-
+  <h1>Silabus Kiddy Robotic</h1>
   <nav>
-    <button class="nav-button" onclick="filterSemester(1)">Semester 1</button>
-    <button class="nav-button" onclick="filterSemester(2)">Semester 2</button>
-    <button class="nav-button" onclick="filterSemester('all')">All</button>
+    <button onclick="filterSemester(1)">Semester 1</button>
+    <button onclick="filterSemester(2)">Semester 2</button>
+    <button onclick="filterSemester('all')">All</button>
   </nav>
 
-  <!-- … isi tabel silabus Semester 1 & 2 … -->
-  <!-- Semester 1 -->
-  <section id="sem1">
-    <h2 style="text-align:center;font-family:'Fredoka One';color:#4d97ff;">Semester 1 (Pertemuan 1–16)</h2>
-    <table>
-      <thead><tr><th>Pertemuan</th><th>Nama Robot</th><th>Uraian</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>Introduce Robot</td><td>Pengenalan CPU, block, dan DC Motor serta fungsi perangkat robotik.</td></tr>
-        <tr><td>2</td><td>Bike Bot</td><td>Proyek bentuk sepeda dengan CPU dan 1 DC Motor untuk kreativitas.</td></tr>
-        <tr><td>3</td><td>Helicopter</td><td>Mainan helikopter dengan 1 DC Motor untuk eksplorasi konsep penerbangan.</td></tr>
-        <tr><td>4</td><td>Crab Bot</td><td>Tema hewan pantai, melatih kerjasama tim dengan DC Motor.</td></tr>
-        <tr><td>5</td><td>Mart Bot</td><td>Robot belanja dengan CPU dan 1 DC Motor, eksperimen teknologi modern.</td></tr>
-        <tr><td>6</td><td>Creation Bot</td><td>Diskusi, pilihan bebas, dan kerja sama tim untuk kreativitas.</td></tr>
-        <tr><td>7</td><td>Alarm Bot</td><td>Robot dengan CPU, 1 DC Motor, dan sensor inframerah.</td></tr>
-        <tr><td>8</td><td>Gorilla Bot</td><td>2 DC Motor menggerakkan tangan mirip gorila.</td></tr>
-        <tr><td>9</td><td>Exploring Session</td><td>Meningkatkan kerjasama tim, kreativitas, dan komunikasi kelompok.</td></tr>
-        <tr><td>10</td><td>Rabbit Bot</td><td>Robot kelinci dengan 2 DC Motor dan 1 IR sensor.</td></tr>
-        <tr><td>11</td><td>Sensor Bot</td><td>Bentuk bebas dengan 2 DC Motor dan sensor IR/Contact Switch.</td></tr>
-        <tr><td>12</td><td>Tractor Bot</td><td>Robot traktor dengan roda bergelombang, 2 DC Motor, dan sensor.</td></tr>
-        <tr><td>13</td><td>Sumo Bot</td><td>Kompetisi robot sumo dengan 2 DC Motor.</td></tr>
-        <tr><td>14</td><td>Creative Session</td><td>Sesi inovasi dengan 2 DC Motor dan sensor.</td></tr>
-        <tr><td>15</td><td>Baseball Bot</td><td>Robot baseball dengan contact switch untuk pukulan otomatis.</td></tr>
-        <tr><td>16</td><td>MathBot</td><td>Mengaitkan perhitungan dasar dengan gerak robot: jarak, waktu, kecepatan.</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-<!-- Semester 2 -->
-<section id="sem2">
-  <h2 style="text-align:center;font-family:'Fredoka One';color:#4d97ff;">
-    Semester 2 (Pertemuan 17–32)
-  </h2>
-  <table>
+  <table id="silabus">
     <thead>
       <tr>
         <th>Pertemuan</th>
@@ -90,30 +48,79 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>17</td><td>One Wheel Challenge</td><td>Tantangan inovatif roda tunggal, review desain dan fungsi.</td></tr>
-      <tr><td>18</td><td>Truck Innovation</td><td>Robot truk dengan 3 DC Motor, mendorong inovasi transportasi.</td></tr>
-      <tr><td>19</td><td>Frog Bot</td><td>Robot kodok dengan 2 DC Motor dan sensor cerdas.</td></tr>
-      <tr><td>20</td><td>Ballista Bot</td><td>Robot ballista dengan 1 DC Motor dan 1 Contact Switch.</td></tr>
-      <tr><td>21</td><td>Battle Bot</td><td>Robot pertarungan dengan 2 DC Motor dan 1 Contact Switch.</td></tr>
-      <tr><td>22</td><td>Helper Bot</td><td>Robot teman pintar dengan 2 DC Motor dan sensor bebas.</td></tr>
-      <tr><td>23</td><td>Soccer Bot</td><td>Robot sepak bola dengan 1 DC Motor dan 1 sensor.</td></tr>
-      <tr><td>24</td><td>Monster Challenge</td><td>Robot monster dengan posisi DC Motor berbeda dan sensor.</td></tr>
-      <tr><td>25</td><td>Rabbit Race</td><td>Robot lomba kelinci dengan 2 DC Motor dan 3 sensor.</td></tr>
-      <tr><td>26</td><td>Avoid Bot</td><td>Robot penghindar rintangan dengan 3 IR sensor.</td></tr>
-      <tr><td>27</td><td>Dinosaurus</td><td>Robot dinosaurus untuk eksplorasi bentuk dan kreativitas.</td></tr>
-      <tr><td>28</td><td>Golf Bot</td><td>Robot golf dengan 1 DC Motor dan 1 Contact Switch.</td></tr>
-      <tr><td>29</td><td>Snake Padder</td><td>Robot ular tangga interaktif untuk arena permainan.</td></tr>
-      <tr><td>30</td><td>Mantis Bot</td><td>Robot serangga dengan sound sensor, dikendalikan dengan tepukan.</td></tr>
-      <tr><td>31</td><td>Lokomotif</td><td>Robot kereta dengan 2 IR sensor dan 2 DC Motor.</td></tr>
-      <tr><td>32</td><td>Tower Defense</td><td>Robot strategi pertahanan dengan sound sensor dan 2 DC Motor.</td></tr>
+    
+<!-- Subheader Semester 1 -->
+<tr class="subheader" data-semester="1"><td colspan="3">Semester 1 (Pertemuan 1–16)</td></tr>
+
+<tr data-semester="1"><td>1</td><td>StartBot</td><td>StartBot mengenalkan antarmuka dasar, keamanan perakitan, dan kontrol gerak sederhana. Siswa mempelajari hubungan perintah dengan aksi robot, membangun rasa ingin tahu, serta kerangka berpikir sistematis sebelum melangkah ke tantangan berikutnya.</td></tr>
+
+<tr data-semester="1"><td>2</td><td>BikeBot</td><td>BikeBot memperkenalkan mekanisme roda, keseimbangan, dan arah. Siswa belajar mengatur kecepatan motor, memprediksi lintasan, serta menyelaraskan logika perintah dengan gerakan nyata. Fokus pada kontrol terstruktur dan pemahaman gaya gesek dasar.</td></tr>
+
+<tr data-semester="1"><td>3</td><td>RaceBot</td><td>RaceBot menekankan optimasi kecepatan, akselerasi, dan jarak tempuh. Siswa melakukan eksperimen parameter motor, dari durasi hingga intensitas. Kegiatan balapan mini mendorong strategi, evaluasi hasil, dan iterasi cepat untuk memperbaiki performa.</td></tr>
+
+<tr data-semester="1"><td>4</td><td>MonoBot</td><td>MonoBot mengajak siswa memprogram gerak terkoordinasi dengan satu modul motor. Latihan menekankan sinkronisasi perintah, durasi, dan jeda. Siswa memahami dampak perubahan kecil dalam urutan instruksi terhadap perilaku robot yang konsisten.</td></tr>
+
+<tr data-semester="1"><td>5</td><td>WheelchairBot</td><td>WheelchairBot memperkenalkan desain beroda ganda dan belokan diferensial. Siswa mempraktekkan kombinasi kecepatan kiri‑kanan untuk manuver halus. Materi menumbuhkan pemahaman koordinasi motor, simetri, keseimbangan, serta pentingnya kalibrasi perintah.</td></tr>
+
+<tr data-semester="1"><td>6</td><td>ScooterBot</td><td>ScooterBot melatih kontrol jarak pendek dan respons cepat. Siswa berlatih mengatur pulsa perintah untuk start‑stop akurat, menghindari overshoot. Kegiatan menekankan ketelitian, ritme, dan timing agar robot bergerak tepat sesuai target lintasan.</td></tr>
+
+<tr data-semester="1"><td>7</td><td>JoyBot</td><td>JoyBot memperkenalkan kontrol interaktif melalui input sederhana. Siswa menggabungkan kondisi, aksi, dan umpan balik untuk membuat robot responsif. Materi menumbuhkan pemahaman peristiwa, percabangan, dan pola logika yang menyenangkan.</td></tr>
+
+<tr data-semester="1"><td>8</td><td>ClickBot</td><td>ClickBot fokus pada pemicu aksi berdasarkan perintah singkat. Siswa memetakan klik ke gerakan spesifik, mengatur debounce, dan memastikan konsistensi perilaku. Tujuannya melatih kejelasan instruksi, urutan eksekusi, serta keterbacaan kode.</td></tr>
+
+<tr data-semester="1"><td>9</td><td>LightBot</td><td>LightBot mengenalkan indikator visual dan pola sinyal. Siswa menyusun urutan lampu untuk memberi makna status, timing, dan notifikasi sederhana. Latihan memperkaya integrasi gerak‑cahaya, disiplin pengaturan waktu, serta komunikasi kondisi robot.</td></tr>
+
+<tr data-semester="1"><td>10</td><td>SoundBot</td><td>SoundBot mengajarkan sinyal audio sebagai umpan balik. Siswa memprogram nada pendek untuk status atau peringatan. Materi menekankan korelasi peristiwa dengan suara, menjaga durasi dan intensitas, sekaligus mengajarkan etika penggunaan audio.</td></tr>
+
+<tr data-semester="1"><td>11</td><td>DanceBot</td><td>DanceBot mengintegrasikan gerakan ritmis dengan pola musik sederhana. Siswa menyusun sequence gerak, jeda, dan sinkronisasi. Aktivitas mendorong kreativitas, pemahaman tempo, serta koreografi kecil yang melatih koordinasi instruksi.</td></tr>
+
+<tr data-semester="1"><td>12</td><td>DrawBot</td><td>DrawBot memperkenalkan lintasan berbasis bentuk sederhana. Siswa memprogram garis, sudut, dan pola untuk menghasilkan gambar dasar. Materi menguatkan konsep koordinat, urutan komando, serta evaluasi hasil dengan membandingkan rencana dengan keluaran visual.</td></tr>
+
+<tr data-semester="1"><td>13</td><td>MazeBot</td><td>MazeBot mengajak siswa merencanakan jalur, menghindari hambatan, dan mengeksekusi strategi. Fokus pada pemecahan masalah bertahap: observasi, hipotesis, uji, dan perbaikan. Siswa belajar menyusun instruksi navigasi yang efisien dengan percabangan logika.</td></tr>
+
+<tr data-semester="1"><td>14</td><td>CodeBot</td><td>CodeBot menguatkan konsep dasar pemrograman: urutan, pengulangan, dan kondisi. Siswa menulis blok perintah yang rapi, menguji, lalu merevisi. Penekanan pada keterbacaan, modularitas sederhana, dan dokumentasi agar proyek mudah dipahami serta diulang.</td></tr>
+
+<tr data-semester="1"><td>15</td><td>LogicBot</td><td>LogicBot mendalami percabangan dan kombinasi kondisi. Siswa merancang aturan perilaku robot berdasarkan input dan state. Latihan menekankan akurasi, pengujian kasus, serta pencegahan konflik instruksi agar robot bertindak konsisten dalam skenario berulang.</td></tr>
+
+<tr data-semester="1"><td>16</td><td>MathBot</td><td>MathBot mengaitkan perhitungan dasar dengan gerak robot: jarak, waktu, dan kecepatan. Siswa mengestimasi parameter, menghitung kebutuhan, lalu menguji hasil. Materi memperkuat literasi numerik fungsional dan keterampilan memprediksi perilaku sistem secara sederhana.</td></tr>
+      
+      <!-- Subheader Semester 2 -->
+<tr class="subheader" data-semester="2"><td colspan="3">Semester 2 (Pertemuan 17–32)</td></tr>
+
+<tr data-semester="2"><td>17</td><td>BuildBot</td><td>BuildBot berfokus pada perakitan yang rapi dan kuat. Siswa menata komponen, memastikan stabilitas, dan memverifikasi fungsi dasar. Tujuannya membangun kebiasaan kerja sistematis, dokumentasi langkah, serta standar kualitas perakitan untuk proyek lebih kompleks.</td></tr>
+
+<tr data-semester="2"><td>18</td><td>TestBot</td><td>TestBot menekankan pengujian terstruktur: rencana uji, observasi, dan pencatatan hasil. Siswa menemukan bug, mengisolasi masalah, dan menyusun perbaikan. Materi menguatkan siklus iterasi efektif untuk meningkatkan keandalan robot secara nyata.</td></tr>
+
+<tr data-semester="2"><td>19</td><td>SmartBot</td><td>SmartBot mengenalkan perilaku cerdas berbasis aturan sederhana. Siswa memadukan input, state, dan keputusan agar robot adaptif. Fokusnya pada prioritas, fallback, dan respon aman yang konsisten untuk skenario kelas dan proyek terarah.</td></tr>
+
+<tr data-semester="2"><td>20</td><td>PlayBot</td><td>PlayBot mendorong eksplorasi kreatif: mini‑game, tantangan, dan interaksi sederhana. Siswa merancang pengalaman menyenangkan yang tetap mendidik. Materi menguatkan keseimbangan antara tujuan belajar, keterlibatan siswa, dan kualitas teknis agar proyek menarik.</td></tr>
+
+<tr data-semester="2"><td>21</td><td>LearnBot</td><td>LearnBot menstrukturkan materi agar robot menjadi alat bantu belajar. Siswa menyusun urutan tantangan bertahap, memberi umpan balik jelas, dan menilai kemajuan. Penekanan pada desain pengalaman yang ramah, instruktif, serta mudah dipahami pengguna pemula.</td></tr>
+
+<tr data-semester="2"><td>22</td><td>ThinkBot</td><td>ThinkBot melatih penalaran: menghubungkan data input dengan keputusan. Siswa membuat alur berpikir transparan, mencatat asumsi, dan mengevaluasi hasil. Materi mendorong refleksi, peningkatan logika, serta komunikasi proses agar solusi mudah ditinjau bersama.</td></tr>
+
+<tr data-semester="2"><td>23</td><td>ExploreBot</td><td>ExploreBot memfasilitasi penjelajahan lingkungan terkontrol. Siswa menyusun strategi rute, checkpoints, dan evaluasi capaian. Fokus pada rasa ingin tahu yang aman, dokumentasi temuan, serta refleksi untuk merancang eksperimen sederhana namun bermakna di kelas.</td></tr>
+
+<tr data-semester="2"><td>24</td><td>CreateBot</td><td>CreateBot mengarah pada kreasi orisinal. Siswa menyusun konsep, prototipe, dan iterasi hingga fungsional. Materi menekankan dokumentasi desain, alasan teknis, dan penyajian karya agar siswa mampu menjelaskan proses dan hasil dengan percaya diri.</td></tr>
+
+<tr data-semester="2"><td>25</td><td>VisionBot</td><td>VisionBot memperkenalkan indikator visual kompleks: pola, status multi‑level, atau ikon. Siswa menyelaraskan sinyal dengan peristiwa signifikan. Tujuannya memperjelas komunikasi robot, menjaga konsistensi, serta meminimalkan kebingungan pengguna saat berinteraksi.</td></tr>
+
+<tr data-semester="2"><td>26</td><td>EnergyBot</td><td>EnergyBot mengajarkan manajemen energi sederhana: durasi aktif, jeda, dan efisiensi gerak. Siswa merencanakan penggunaan sumber daya secara bijak. Materi menumbuhkan kebiasaan hemat, perawatan perangkat, serta desain perintah yang efisien.</td></tr>
+
+<tr data-semester="2"><td>27</td><td>BalanceBot</td><td>BalanceBot memfokuskan keseimbangan gerak dan stabilitas lintasan. Siswa mengevaluasi faktor gaya, distribusi massa, dan kontrol terkoordinasi. Latihan menekankan penyesuaian parameter kecil demi perbaikan stabilitas yang terasa pada perilaku robot.</td></tr>
+
+<tr data-semester="2"><td>28</td><td>SpeedBot</td><td>SpeedBot kembali ke optimasi kecepatan dengan lebih sistematis. Siswa merancang eksperimen terukur, memplot hasil, dan memilih konfigurasi optimal. Materi menguatkan pendekatan ilmiah sederhana untuk meningkatkan performa tanpa mengorbankan kontrol dan keamanan.</td></tr>
+
+<tr data-semester="2"><td>29</td><td>TrackBot</td><td>TrackBot menekankan pelacakan jalur dan konsistensi eksekusi. Siswa menyusun rute, menguji pengulangan, dan menilai deviasi. Tujuannya membangun ketelitian, evaluasi berulang, serta dokumentasi perbaikan agar jalur lebih akurat dari waktu ke waktu.</td></tr>
+
+<tr data-semester="2"><td>30</td><td>GuideBot</td><td>GuideBot berfokus pada perilaku pemandu: memberi instruksi atau memimpin rute. Siswa merancang skenario kecil, memetakan langkah, dan memastikan kejelasan sinyal. Materi menguatkan komunikasi ramah pengguna dan tindakan robot yang konsisten.</td></tr>
+
+<tr data-semester="2"><td>31</td><td>HelperBot</td><td>HelperBot mengembangkan perilaku bantuan sederhana: tugas kecil, pengingat, atau dukungan aktivitas. Siswa menyusun logika tugas, prioritas, dan failsafe. Materi menumbuhkan empati desain serta kegunaan nyata di lingkungan belajar terstruktur.</td></tr>
+
+<tr data-semester="2"><td>32</td><td>ReviewBot</td><td>ReviewBot merangkum seluruh konsep: perakitan, kontrol, logika, dan evaluasi. Siswa merefleksi proses, memperbaiki karya, dan mempresentasikan hasil. Tujuan akhir memastikan pemahaman menyeluruh, kebiasaan kerja baik, serta kesiapan naik ke tingkat berikutnya.</td></tr>
+
     </tbody>
   </table>
-</section>
-
-
-  <footer>
-    <a href="../index.html">🏠 Kembali ke Home</a>
-  </footer>
 
   <script>
     function filterSemester(sem){
