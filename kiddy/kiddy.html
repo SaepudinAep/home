@@ -1,19 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Beginner</title>
+  <title>Kiddy</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Roboto', sans-serif; margin:0; background:#fdfdfd; color:#333; }
     header { background: linear-gradient(90deg,#4d97ff,#00c896); color:white; padding:40px; text-align:center; }
     header h1 { font-family:'Fredoka One',cursive; font-size:42px; margin:0; }
     header p { font-size:18px; margin-top:10px; }
-    .hero { text-align:center; padding:20px; }
-    .hero h2 { font-size:24px; color:#4d97ff; font-family:'Fredoka One'; }
-
-    /* Filter buttons */
     nav { text-align:center; margin:20px; }
     .nav-button {
       background:#ffab19; color:#fff; text-decoration:none;
@@ -21,53 +16,38 @@
       font-family:'Fredoka One'; margin:4px; border:none; cursor:pointer;
     }
     .nav-button:hover { background:#4d97ff; }
-
     .grid {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
       gap:20px; padding:20px;
     }
     .card {
-      display:block;
-      text-decoration:none;
-      background:#fff;
-      border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.1);
-      padding:20px;
-      text-align:center;
-      transition:transform 0.2s, background 0.2s;
+      display:block; text-decoration:none; background:#fff;
+      border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      padding:20px; text-align:center; transition:transform 0.2s, background 0.2s;
       color:#333;
     }
-    .card:hover {
-      transform:translateY(-5px);
-      background:#f0faff;
-    }
+    .card:hover { transform:translateY(-5px); background:#f0faff; }
     .card h3 { font-family:'Fredoka One',cursive; color:#4d97ff; margin:0; }
-
     footer { background:#4d97ff; color:#fff; text-align:center; padding:20px; margin-top:40px; }
     footer a { color:#fff; text-decoration:none; font-family:'Fredoka One'; }
     footer a:hover { text-decoration:underline; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
+    @media (max-width:768px){
       header h1 { font-size:32px; }
       header p { font-size:16px; }
-      .hero h2 { font-size:20px; }
       .grid { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
     }
-    @media (max-width: 480px) {
+    @media (max-width:480px){
       header { padding:20px; }
       header h1 { font-size:24px; }
       header p { font-size:14px; }
-      .hero { padding:15px; }
-      .hero h2 { font-size:18px; }
       .card { padding:15px; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Beginner</h1>
+    <h1>Kiddy</h1>
     <p>Daftar robot untuk level Beginner</p>
   </header>
 
@@ -78,41 +58,41 @@
   </nav>
 
   <section class="grid">
-    <!-- Semester 1 Robots (Pertemuan 1–16) -->
-    <a href="startbot.html" class="card" data-semester="1"><h3>StartBot</h3></a>
-    <a href="bikebot.html" class="card" data-semester="1"><h3>BikeBot</h3></a>
-    <a href="racebot.html" class="card" data-semester="1"><h3>RaceBot</h3></a>
-    <a href="monobot.html" class="card" data-semester="1"><h3>MonoBot</h3></a>
-    <a href="wheelchairbot.html" class="card" data-semester="1"><h3>WheelchairBot</h3></a>
-    <a href="scooterbot.html" class="card" data-semester="1"><h3>ScooterBot</h3></a>
-    <a href="joybot.html" class="card" data-semester="1"><h3>JoyBot</h3></a>
-    <a href="clickbot.html" class="card" data-semester="1"><h3>ClickBot</h3></a>
-    <a href="lightbot.html" class="card" data-semester="1"><h3>LightBot</h3></a>
-    <a href="soundbot.html" class="card" data-semester="1"><h3>SoundBot</h3></a>
-    <a href="dancebot.html" class="card" data-semester="1"><h3>DanceBot</h3></a>
-    <a href="drawbot.html" class="card" data-semester="1"><h3>DrawBot</h3></a>
-    <a href="mazebot.html" class="card" data-semester="1"><h3>MazeBot</h3></a>
-    <a href="codebot.html" class="card" data-semester="1"><h3>CodeBot</h3></a>
-    <a href="logicbot.html" class="card" data-semester="1"><h3>LogicBot</h3></a>
+    <!-- Semester 1 Robots -->
+    <a href="introduce.html" class="card" data-semester="1"><h3>Introduce Robot</h3></a>
+    <a href="bikebot.html" class="card" data-semester="1"><h3>Bike Bot</h3></a>
+    <a href="helicopter.html" class="card" data-semester="1"><h3>Helicopter</h3></a>
+    <a href="crabbot.html" class="card" data-semester="1"><h3>Crab Bot</h3></a>
+    <a href="martbot.html" class="card" data-semester="1"><h3>Mart Bot</h3></a>
+    <a href="creationbot.html" class="card" data-semester="1"><h3>Creation Bot</h3></a>
+    <a href="alarmbot.html" class="card" data-semester="1"><h3>Alarm Bot</h3></a>
+    <a href="gorillabot.html" class="card" data-semester="1"><h3>Gorilla Bot</h3></a>
+    <a href="exploring.html" class="card" data-semester="1"><h3>Exploring Session</h3></a>
+    <a href="rabbitbot.html" class="card" data-semester="1"><h3>Rabbit Bot</h3></a>
+    <a href="sensorbot.html" class="card" data-semester="1"><h3>Sensor Bot</h3></a>
+    <a href="tractorbot.html" class="card" data-semester="1"><h3>Tractor Bot</h3></a>
+    <a href="sumobot.html" class="card" data-semester="1"><h3>Sumo Bot</h3></a>
+    <a href="creative.html" class="card" data-semester="1"><h3>Creative Session</h3></a>
+    <a href="baseballbot.html" class="card" data-semester="1"><h3>Baseball Bot</h3></a>
     <a href="mathbot.html" class="card" data-semester="1"><h3>MathBot</h3></a>
 
-    <!-- Semester 2 Robots (Pertemuan 17–32) -->
-    <a href="buildbot.html" class="card" data-semester="2"><h3>BuildBot</h3></a>
-    <a href="testbot.html" class="card" data-semester="2"><h3>TestBot</h3></a>
-    <a href="smartbot.html" class="card" data-semester="2"><h3>SmartBot</h3></a>
-    <a href="playbot.html" class="card" data-semester="2"><h3>PlayBot</h3></a>
-    <a href="learnbot.html" class="card" data-semester="2"><h3>LearnBot</h3></a>
-    <a href="thinkbot.html" class="card" data-semester="2"><h3>ThinkBot</h3></a>
-    <a href="explorebot.html" class="card" data-semester="2"><h3>ExploreBot</h3></a>
-    <a href="createbot.html" class="card" data-semester="2"><h3>CreateBot</h3></a>
-    <a href="visionbot.html" class="card" data-semester="2"><h3>VisionBot</h3></a>
-    <a href="energybot.html" class="card" data-semester="2"><h3>EnergyBot</h3></a>
-    <a href="balancebot.html" class="card" data-semester="2"><h3>BalanceBot</h3></a>
-    <a href="speedbot.html" class="card" data-semester="2"><h3>SpeedBot</h3></a>
-    <a href="trackbot.html" class="card" data-semester="2"><h3>TrackBot</h3></a>
-    <a href="guidebot.html" class="card" data-semester="2"><h3>GuideBot</h3></a>
-    <a href="helperbot.html" class="card" data-semester="2"><h3>HelperBot</h3></a>
-    <a href="reviewbot.html" class="card" data-semester="2"><h3>ReviewBot</h3></a>
+    <!-- Semester 2 Robots -->
+    <a href="onewheel.html" class="card" data-semester="2"><h3>One Wheel Challenge</h3></a>
+    <a href="truck.html" class="card" data-semester="2"><h3>Truck Innovation</h3></a>
+    <a href="frog.html" class="card" data-semester="2"><h3>Frog Bot</h3></a>
+    <a href="ballista.html" class="card" data-semester="2"><h3>Ballista Bot</h3></a>
+    <a href="battle.html" class="card" data-semester="2"><h3>Battle Bot</h3></a>
+    <a href="helper.html" class="card" data-semester="2"><h3>Helper Bot</h3></a>
+    <a href="soccer.html" class="card" data-semester="2"><h3>Soccer Bot</h3></a>
+    <a href="monster.html" class="card" data-semester="2"><h3>Monster Challenge</h3></a>
+    <a href="rabbitrace.html" class="card" data-semester="2"><h3>Rabbit Race</h3></a>
+    <a href="avoid.html" class="card" data-semester="2"><h3>Avoid Bot</h3></a>
+    <a href="dinosaurus.html" class="card" data-semester="2"><h3>Dinosaurus</h3></a>
+    <a href="golf.html" class="card" data-semester="2"><h3>Golf Bot</h3></a>
+    <a href="snake.html" class="card" data-semester="2"><h3>Snake Padder</h3></a>
+    <a href="mantis.html" class="card" data-semester="2"><h3>Mantis Bot</h3></a>
+    <a href="lokomotif.html" class="card" data-semester="2"><h3>Lokomotif</h3></a>
+    <a href="tower.html" class="card" data-semester="2"><h3>Tower Defense</h3></a>
   </section>
 
   <footer>
