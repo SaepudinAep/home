@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Absensi Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
+<style>
+  body { font-family:'Roboto',sans-serif; margin:0; background:#f5f5f5; }
+  header {
+    background: linear-gradient(90deg,#2196f3,#4caf50);
+    color:#fff; padding:15px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  header h1 { font-family:'Fredoka One',cursive; font-size:24px; margin:0; }
+  header nav a {
+    background:#ff9800; color:#fff; text-decoration:none;
+    padding:8px 14px; border-radius:6px; font-weight:bold;
+  }
+  header nav a:hover { background:#f44336; }
+
+  form { padding:1cm; background:#e0e0e0; }
+  form h3 { margin-top:0; font-family:'Fredoka One'; color:#333; }
+  form button {
+    background:#2196f3; color:#fff; font-weight:bold;
+    padding:10px 20px; border:none; border-radius:6px;
+    cursor:pointer; font-size:14px;
+  }
+  form button:hover { background:#4caf50; }
+
+  .page {
+    width:21cm; height:29.7cm;
+    display:flex; flex-direction:row;
+    padding:1cm; box-sizing:border-box;
+    page-break-after:always;
+    background:#fff;
+  }
+  .column { width:10.5cm; padding:0 1cm; }
+  table {
+    border-collapse: collapse;
+    width:8cm; margin-bottom:1cm;
+    box-shadow:0 2px 4px rgba(0,0,0,0.2);
+  }
+  th, td {
+    border:1px solid #333;
+    text-align:center; font-size:12px; padding:4px;
+  }
+  /* Warna block header */
+  .t1 th { background:#2196f3; color:#fff; }
+  .t2 th { background:#4caf50; color:#fff; }
+  .t3 th { background:#ff9800; color:#fff; }
+  .t4 th { background:#f44336; color:#fff; }
+  .t5 th { background:#9c27b0; color:#fff; }
+  .t6 th { background:#ffc107; color:#333; }
+  .t7 th { background:#00bcd4; color:#fff; }
+  .t8 th { background:#e91e63; color:#fff; }
+  .t9 th { background:#009688; color:#fff; }
+  .t10 th { background:#607d8b; color:#fff; }
+
+  @media print {
+    form, header { display:none; }
+    th {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Absensi Generator</h1>
+  <nav><a href="index.html">Home</a></nav>
+</header>
+
+<form>
+  <h3>Pilih Jenis Absensi</h3>
+  <label><input type="radio" name="jenis" value="sekolah" checked> Sekolah</label>
+  <label><input type="radio" name="jenis" value="privat"> Privat (Kehadiran)</label>
+  <label><input type="radio" name="jenis" value="materi"> Privat (Materi)</label>
+  <label><input type="radio" name="jenis" value="terapi"> Terapi Wicara</label>
+  <br><br>
+  <button type="button" onclick="generateAbsensi()">Generate Absensi</button>
+</form>
+
+<div id="absensiContainer"></div>
+
+<script>
+function buatTabel(jenis, cls){
+  let header="";
+  if(jenis==="sekolah"){
+    header=`<tr>
+      <th style="width:1cm">No</th>
+      <th style="width:3cm">Tanggal</th>
+      <th style="width:2cm">Materi</th>
+      <th style="width:2cm">Sekolah</th>
+    </tr>`;
+  } else if(jenis==="privat"){
+    header=`<tr>
+      <th style="width:1cm">No</th>
+      <th style="width:3cm">Tanggal</th>
+      <th style="width:3cm">Nama</th>
+      <th style="width:2cm">Paraf</th>
+    </tr>`;
+  } else if(jenis==="materi"){
+    header=`<tr>
+      <th style="width:1cm">No</th>
+      <th style="width:2cm">Tanggal</th>
+      <th style="width:2cm">Activity</th>
+      <th style="width:5cm">Materi</th>
+    </tr>`;
+  } else {
+    header=`<tr>
+      <th style="width:1cm">No</th>
+      <th style="width:3cm">Tanggal</th>
+      <th style="width:4cm">Paraf</th>
+    </tr>`;
+  }
+
+  let html=`<table class="${cls}">${header}`;
+  for(let i=1;i<=8;i++){
+    if(jenis==="terapi"){
+      html+=`<tr><td>${i}</td><td></td><td></td></tr>`;
+    } else {
+      html+=`<tr><td>${i}</td><td></td><td></td><td></td></tr>`;
+    }
+  }
+  html+="</table>";
+  return html;
+}
+
+function generateAbsensi(){
+  const jenis=document.querySelector('input[name="jenis"]:checked').value;
+  const container=document.getElementById("absensiContainer");
+  container.innerHTML="";
+  const page=document.createElement("div");
+  page.className="page";
+  const colLeft=document.createElement("div"); colLeft.className="column";
+  const colRight=document.createElement("div"); colRight.className="column";
+
+  for(let i=1;i<=5;i++){ colLeft.innerHTML+=buatTabel(jenis,"t"+i); }
+  for(let i=6;i<=10;i++){ colRight.innerHTML+=buatTabel(jenis,"t"+i); }
+
+  page.appendChild(colLeft); page.appendChild(colRight);
+  container.appendChild(page);
+}
+</script>
+</body>
+</html>
