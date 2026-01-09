@@ -35,15 +35,22 @@
     background:#fff;
   }
   .column { width:10.5cm; padding:0 1cm; }
+
   table {
     border-collapse: collapse;
-    width:8cm; margin-bottom:1cm;
+    margin-bottom:1cm;
     box-shadow:0 2px 4px rgba(0,0,0,0.2);
   }
+  table.sekolah { width:10cm; }
+  table.privat  { width:9cm; }
+  table.materi  { width:10cm; }
+  table.terapi  { width:8cm; }
+
   th, td {
     border:1px solid #333;
     text-align:center; font-size:12px; padding:4px;
   }
+
   /* Warna block header */
   .t1 th { background:#2196f3; color:#fff; }
   .t2 th { background:#4caf50; color:#fff; }
@@ -115,7 +122,7 @@ function buatTabel(jenis, cls){
     </tr>`;
   }
 
-  let html=`<table class="${cls}">${header}`;
+  let html=`<table class="${cls} ${jenis}">${header}`;
   for(let i=1;i<=8;i++){
     if(jenis==="terapi"){
       html+=`<tr><td>${i}</td><td></td><td></td></tr>`;
