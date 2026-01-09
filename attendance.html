@@ -7,25 +7,25 @@
 <style>
   body { font-family:'Roboto',sans-serif; margin:0; background:#f5f5f5; }
   header {
-    background: linear-gradient(90deg,#2196f3,#4caf50);
+    background: linear-gradient(90deg,#4d97ff,#ffab19);
     color:#fff; padding:15px;
     display:flex; justify-content:space-between; align-items:center;
   }
   header h1 { font-family:'Fredoka One',cursive; font-size:24px; margin:0; }
   header nav a {
-    background:#ff9800; color:#fff; text-decoration:none;
+    background:#ffab19; color:#fff; text-decoration:none;
     padding:8px 14px; border-radius:6px; font-weight:bold;
   }
-  header nav a:hover { background:#f44336; }
+  header nav a:hover { background:#4d97ff; }
 
-  form { padding:1cm; background:#e0e0e0; }
+  form { padding:1cm; background:#fff3d6; }
   form h3 { margin-top:0; font-family:'Fredoka One'; color:#333; }
   form button {
-    background:#2196f3; color:#fff; font-weight:bold;
+    background:#4d97ff; color:#fff; font-weight:bold;
     padding:10px 20px; border:none; border-radius:6px;
     cursor:pointer; font-size:14px;
   }
-  form button:hover { background:#4caf50; }
+  form button:hover { background:#ffab19; }
 
   .page {
     width:21cm; height:29.7cm;
@@ -52,19 +52,22 @@
   }
 
   /* Warna block header */
-  .t1 th { background:#2196f3; color:#fff; }
-  .t2 th { background:#4caf50; color:#fff; }
-  .t3 th { background:#ff9800; color:#fff; }
-  .t4 th { background:#f44336; color:#fff; }
-  .t5 th { background:#9c27b0; color:#fff; }
-  .t6 th { background:#ffc107; color:#333; }
-  .t7 th { background:#00bcd4; color:#fff; }
-  .t8 th { background:#e91e63; color:#fff; }
-  .t9 th { background:#009688; color:#fff; }
-  .t10 th { background:#607d8b; color:#fff; }
+  .t1 th { background:#4d97ff; color:#fff; }
+  .t2 th { background:#ffab19; color:#fff; }
+  .t3 th { background:#fff3d6; color:#333; }
+  .t4 th { background:#00bcd4; color:#fff; }
+  .t5 th { background:#e91e63; color:#fff; }
+  .t6 th { background:#9c27b0; color:#fff; }
+  .t7 th { background:#4caf50; color:#fff; }
+  .t8 th { background:#f44336; color:#fff; }
+  .t9 th { background:#607d8b; color:#fff; }
+  .t10 th { background:#009688; color:#fff; }
 
   @media print {
-    form, header { display:none; }
+    header, form { display:none; }
+    a[href]:after { content:none !important; } /* hilangkan URL link */
+    body { zoom:1.1; } /* perbesar konten saat print */
+    @page { margin:0; } /* hilangkan margin default */
     th {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
