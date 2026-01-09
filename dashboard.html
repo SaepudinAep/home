@@ -69,7 +69,7 @@ function renderList() {
   list.innerHTML = "";
   files.forEach((file, index) => {
     const li = document.createElement("li");
-    li.textContent = file.name;
+    li.textContent = (index+1) + ". " + file.name; // nomor urut + nama file
     const controls = document.createElement("div");
     controls.className = "controls";
     if(index>0){
