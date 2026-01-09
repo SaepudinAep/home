@@ -19,7 +19,7 @@
   }
   header nav a:hover { background:#4d97ff; }
 
-  main { padding:1cm; }
+  main { padding:1rem; max-width:900px; margin:auto; }
   h2 { font-family:'Fredoka One'; color:#333; }
 
   input, button { margin:10px 0; }
@@ -31,20 +31,24 @@
   button:hover { background:#ffab19; }
 
   ul { list-style:none; padding:0; }
-  li { background:#fff3d6; margin:5px 0; padding:6px; border:1px solid #ccc;
-       display:flex; justify-content:space-between; align-items:center;
-       font-size:14px; }
+  li {
+    background:#fff3d6; margin:6px 0; padding:8px;
+    border:1px solid #ccc; border-radius:6px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap;
+  }
+  .controls { display:flex; gap:6px; }
   .controls button {
     background:#ffab19; color:#fff; border:none;
-    padding:4px 8px; border-radius:4px; cursor:pointer;
-    font-size:12px; margin-left:5px;
+    padding:4px 8px; border-radius:4px; cursor:pointer; font-size:12px;
   }
   .controls button:hover { background:#4d97ff; }
-@media print {
-  a[href]:after {
-    content: none !important;
+
+  @media (max-width:600px){
+    header h1 { font-size:18px; }
+    li { flex-direction:column; align-items:flex-start; }
+    .controls { margin-top:6px; }
   }
-}
 </style>
 </head>
 <body>
@@ -74,9 +78,11 @@ function renderList() {
   list.innerHTML = "";
   files.forEach((file, index) => {
     const li = document.createElement("li");
-    li.textContent = (index+1) + ". " + file.name; // nomor urut + nama file
+    li.textContent = (index+1) + ". " + file.name;
+
     const controls = document.createElement("div");
     controls.className = "controls";
+
     if(index>0){
       const upBtn = document.createElement("button");
       upBtn.textContent="↑";
@@ -89,6 +95,12 @@ function renderList() {
       downBtn.onclick=()=>moveDown(index);
       controls.appendChild(downBtn);
     }
+
+    const delBtn = document.createElement("button");
+    delBtn.textContent="✕";
+    delBtn.onclick=()=>deleteFile(index);
+    controls.appendChild(delBtn);
+
     li.appendChild(controls);
     list.appendChild(li);
   });
@@ -100,6 +112,10 @@ function moveUp(i){
 }
 function moveDown(i){
   [files[i], files[i+1]] = [files[i+1], files[i]];
+  renderList();
+}
+function deleteFile(i){
+  files.splice(i,1);
   renderList();
 }
 
