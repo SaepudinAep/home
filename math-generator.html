@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Math Worksheet Generator</title>
+  <title>Math Worksheet Generator (Versi Baru)</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -29,7 +29,7 @@
     form label { margin-right:12px; }
     button {
       background:var(--blue); color:white; border:none; padding:10px 20px; border-radius:6px;
-      cursor:pointer; font-weight:bold; margin-top:15px;
+      cursor:pointer; font-weight:bold; margin-top:15px; margin-right:10px;
     }
     button:hover { background:var(--green); }
 
@@ -60,13 +60,16 @@
 </head>
 <body>
   <header>
-    <h1>Math Worksheet Generator</h1>
+    <h1>Math Worksheet Generator (Versi Baru)</h1>
     <nav><a href="index.html">Home</a></nav>
   </header>
 
   <form>
     <h3>Jumlah soal</h3>
     <input type="number" id="jumlah" value="20">
+
+    <h3>Soal per halaman</h3>
+    <input type="number" id="perHalaman" value="20">
 
     <h3>Pilih operasi</h3>
     <label><input type="checkbox" name="opsi" value="add" checked> Penjumlahan</label>
@@ -93,28 +96,31 @@
 
     <h3>Pembagian</h3>
     <div class="row">
-      <label>Hasil maksimal <input type="number" id="divMax" value="50"></label>
+      <label>Dividend maksimal <input type="number" id="dividendMax" value="100"></label>
     </div>
 
     <button type="button" onclick="generateWorksheet()">Generate Worksheet</button>
+    <button type="button" onclick="window.print()">Cetak</button>
+    <button type="button" onclick="document.getElementById('worksheetContainer').innerHTML=''">Reset</button>
   </form>
 
   <div id="worksheetContainer"></div>
 
-  <footer>© 2026 Math Worksheet Generator • Dibuat untuk latihan belajar</footer>
+  <footer>© 2026 Math Worksheet Generator • Versi Baru</footer>
   
   <script>
     function rand(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
 
     function generateWorksheet(){
       const jumlah = parseInt(document.getElementById('jumlah').value, 10) || 20;
+      const perHalaman = parseInt(document.getElementById('perHalaman').value, 10) || 20;
       const opsis = Array.from(document.querySelectorAll('input[name="opsi"]:checked')).map(el=>el.value);
       const format = document.querySelector('input[name="format"]:checked').value;
       const addsubMin = parseInt(document.getElementById('addsubMin').value, 10);
       const addsubMax = parseInt(document.getElementById('addsubMax').value, 10);
       const mulMin = parseInt(document.getElementById('mulMin').value, 10);
       const mulMax = parseInt(document.getElementById('mulMax').value, 10);
-      const divMax = parseInt(document.getElementById('divMax').value, 10);
+      const dividendMax = parseInt(document.getElementById('dividendMax').value, 10);
 
       const container = document.getElementById('worksheetContainer');
       container.innerHTML = "";
@@ -129,11 +135,27 @@
       for (let i=0; i<jumlah; i++){
         const operasi = opsis[Math.floor(Math.random()*opsis.length)];
         let a, b, simbol;
-        if (operasi === "add"){ a = rand(addsubMin, addsubMax); b = rand(addsubMin, addsubMax); simbol = "+"; }
-        else if (operasi === "sub"){ a = rand(addsubMin, addsubMax); b = rand(addsubMin, addsubMax); simbol = "−"; }
-        else if (operasi === "mul"){ a = rand(mulMin, mulMax); b = rand(mulMin, mulMax); simbol = "×"; }
-        else { // div
-          const hasil = rand(1, divMax); b = rand(2, 9); a = hasil * b; simbol = "÷";
+
+        if (operasi === "add"){ 
+          a = rand(addsubMin, addsubMax); 
+          b = rand(addsubMin, addsubMax); 
+          simbol = "+"; 
+        }
+        else if (operasi === "sub"){ 
+          a = rand(addsubMin, addsubMax); 
+          b = rand(addsubMin, addsubMax); 
+          simbol = "−"; 
+        }
+        else if (operasi === "mul"){ 
+          a = rand(mulMin, mulMax); 
+          b = rand(mulMin, mulMax); 
+          simbol = "×"; 
+        }
+        else { // div → patokan dividend
+          a = rand(2, dividendMax);   // dividend acak
+          b = rand(2, 9);             // divisor acak
+          a = a - (a % b);            // sesuaikan supaya habis dibagi
+          simbol = "÷";
         }
 
         const paksaHorizontal = (operasi === "div");
@@ -146,12 +168,11 @@
         semuaSoal.push({ nomor: i+1, teks });
       }
 
-      // Pagination: 20 soal/halaman => 10 baris (2 soal per baris)
-      const perHalaman = 20;
+      // Pagination sesuai input perHalaman
       const totalHalaman = Math.ceil(jumlah / perHalaman);
-      const headerHeightMM = 30;        // sesuai CSS .page-header
-      const pageHeightMM = 267;         // tinggi konten dalam margin
-      const rowGapMM = 12;              // sesuai CSS .worksheet row-gap
+      const headerHeightMM = 20;        // sesuai CSS .page-header
+      const pageHeightMM = 290;         // tinggi konten dalam margin
+      const rowGapMM = 8;              // sesuai CSS .worksheet row-gap
 
       for (let h=0; h<totalHalaman; h++){
         const halamanSoal = semuaSoal.slice(h*perHalaman, (h+1)*perHalaman);
