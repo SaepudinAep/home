@@ -20,7 +20,7 @@
         
         textarea {
             width: 100%;
-            height: 100px;
+            height: 200px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -81,7 +81,7 @@
             line-height: 40px;
             border-left: 2px solid #ff5252;
             padding-left: 15px;
-            min-height: 600px;
+            min-height: 800px;
         }
 
         .footer { 
@@ -103,14 +103,14 @@
 <body>
 
     <div class="editor-panel">
-        <h3>Panda Writing Editor 📝</h3>
+        <h3>Writing Editor 📝</h3>
         <p style="font-size: 14px; color: #666;">Ketik judul dan cerita di bawah ini. Tampilan di bawah akan berubah otomatis.</p>
         
         <label>Judul Cerita:</label>
-        <input type="text" id="input-title" style="width:100%; padding:8px; margin-bottom:15px;" value="Robot Sahabat Panda">
+        <input type="text" id="input-title" style="width:100%; padding:8px; margin-bottom:15px;" value=" ">
         
         <label>Isi Cerita:</label>
-        <textarea id="input-text" placeholder="Masukkan cerita di sini...">Panda memiliki sebuah robot kecil yang pintar. Robot itu berwarna merah dan putih. Setiap sore, Panda belajar merakit robot di teras rumah. Ayah sangat bangga melihat Panda rajin berlatih. Menulis dan merakit robot sama-sama membutuhkan kesabaran yang tinggi.</textarea>
+        <textarea id="input-text" placeholder="Masukkan cerita di sini..."></textarea>
         
         <button class="btn-print" onclick="window.print()">Cetak ke A4 (PDF)</button>
     </div>
@@ -125,14 +125,14 @@
             </table>
         </div>
 
-        <h2 id="display-title">Robot Sahabat Panda</h2>
+        <h2 id="display-title"> </h2>
 
         <div style="font-size: 13px; margin-bottom: 10px; font-weight: bold; color: #555;">
             INSTRUKSI: Salinlah cerita di bawah ini ke dalam garis buku halus dengan rapi.
         </div>
 
         <div class="story-box" id="display-story">
-            Panda memiliki sebuah robot kecil yang pintar. Robot itu berwarna merah dan putih. Setiap sore, Panda belajar merakit robot di teras rumah. Ayah sangat bangga melihat Panda rajin berlatih. Menulis dan merakit robot sama-sama membutuhkan kesabaran yang tinggi.
+            
         </div>
 
         <div class="writing-zone">
