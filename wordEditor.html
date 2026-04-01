@@ -3,47 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Lembar Soal V4</title>
+    <title>Generator Lembar Soal V8 - Smart & Flexible</title>
     <style>
-        :root { --primary: #007bff; --success: #28a745; --bg: #f4f7f6; }
+        :root { --primary: #007bff; --success: #28a745; --danger: #dc3545; --bg: #f4f7f6; }
         body { font-family: Arial, sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
+
         .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; z-index: 1000; flex-shrink: 0; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; cursor: pointer; color: #666; font-size: 14px; }
-        .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #f8fbff; }
-        
-        .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 70px; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: #f0f0f0; font-weight: bold; cursor: pointer; color: #444; font-size: 14px; transition: 0.3s; }
+        .tab-btn:hover { background: #e8e8e8; }
+        .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #ffffff; }
+
+        .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 80px; }
         .panel { display: none; padding: 15px; height: 100%; box-sizing: border-box; flex-direction: column; }
         .panel.active { display: flex; }
-        
-        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; background: white; padding: 15px; border-radius: 5px; border: 1px solid #ccc; }
+
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; background: white; padding: 15px; border-radius: 5px; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .setting-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; color: #333; }
         .setting-item input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
         .setting-item input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
 
-        textarea { flex: 1; width: 100%; box-sizing: border-box; padding: 15px; font-size: 16px; border: 1px solid #ccc; resize: none; font-family: monospace; }
-        
-        .preview-box { background: white; max-width: 800px; margin: 0 auto; padding: 2cm; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-family: 'Times New Roman', serif; line-height: 1.5; color: black; min-height: 297mm; }
-        
+        textarea { flex: 1; width: 100%; box-sizing: border-box; padding: 15px; font-size: 15px; border: 1px solid #ccc; resize: none; font-family: inherit; line-height: 1.5; border-radius: 5px; }
+
+        .preview-box { background: white; max-width: 800px; margin: 0 auto; padding: 1.5cm 2cm; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-family: 'Times New Roman', serif; line-height: 1.4; color: black; min-height: 297mm; }
+
         /* Layout Soal */
         .judul { text-align: center; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        .instruksi { font-weight: bold; margin-top: 20px; margin-bottom: 10px; }
+        .instruksi { font-weight: bold; margin-top: 15px; margin-bottom: 8px; }
         
-        .soal-item { margin-bottom: 8px; text-align: justify; display: flex; }
+        .cerita-text { margin-bottom: 6px; text-align: justify; }
+        .soal-item { margin-bottom: 6px; text-align: justify; display: flex; }
         .soal-number { min-width: 2em; flex-shrink: 0; }
         .soal-text { flex: 1; }
-        
-        .opsi-container { display: grid; grid-template-columns: 1fr 1fr; padding-left: 2em; gap: 4px 20px; margin-bottom: 15px; }
+
+        /* Efisiensi Bagian B: Garis sejajar dengan teks */
+        .section-b-text { display: flex; align-items: baseline; width: 100%; }
+        .dot-line-inline { flex: 1; border-bottom: 1px dotted #000; min-width: 50px; margin-left: 8px; }
+
+        .opsi-container { display: grid; grid-template-columns: 1fr 1fr; padding-left: 2em; gap: 2px 20px; margin-bottom: 10px; }
         .opsi-item { padding-left: 1.5em; text-indent: -1.5em; }
-        
-        .ans-field { padding-left: 2em; margin-bottom: 20px; margin-top: 5px; }
-        .dot-line { border-bottom: 1px dotted #000; height: 25px; width: 100%; }
+
+        /* Efisiensi Bagian C: Jawab sejajar dengan garis pertama */
+        .ans-field { padding-left: 2em; margin-bottom: 10px; margin-top: 2px; }
+        .ans-line-first { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 6px; width: 100%; }
+        .ans-line-first i { margin-bottom: 1px; }
+        .dot-line { border-bottom: 1px dotted #000; height: 18px; width: 100%; margin-bottom: 6px; }
+        .dot-line.flex-1 { flex: 1; height: auto; border-bottom: 1px dotted #000; }
 
         .action-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; gap: 10px; justify-content: center; box-sizing: border-box; z-index: 1000; }
-        .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; font-size: 14px; flex: 1; max-width: 150px; }
+        .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; font-size: 14px; flex: 1; max-width: 150px; transition: 0.2s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-clear { background: var(--danger); }
         .btn-format { background: var(--primary); }
         .btn-print { background: var(--success); }
-        .btn-word { background: #17a2b8; }
 
         @media print {
             body { background: white; height: auto; overflow: visible; }
@@ -51,19 +62,21 @@
             .content { padding: 0; overflow: visible; }
             .panel { padding: 0; }
             .preview-box { box-shadow: none; padding: 0; max-width: 100%; margin: 0; }
-            @page { margin: 1.5cm; }
+            @page { margin: 1.2cm; }
         }
         @media (max-width: 600px) {
             .opsi-container { grid-template-columns: 1fr; }
             .preview-box { padding: 15px; }
+            .section-b-text { flex-wrap: wrap; }
+            .dot-line-inline { min-width: 100%; margin-left: 0; margin-top: 15px; }
         }
     </style>
 </head>
 <body>
 
 <div class="tabs">
-    <button class="tab-btn active" onclick="openTab('input-panel', this)">1. INPUT DATA</button>
-    <button class="tab-btn" onclick="openTab('preview-panel', this)">2. HASIL CETAK</button>
+    <button class="tab-btn active" onclick="openTab('input-panel', 0)">1. INPUT DATA</button>
+    <button class="tab-btn" onclick="openTab('preview-panel', 1)">2. HASIL CETAK</button>
 </div>
 
 <div class="content">
@@ -75,14 +88,14 @@
             </div>
             <div class="setting-item">
                 <label>Baris Bagian C:</label>
-                <input type="number" id="cLines" value="2" min="1" max="10"> baris
+                <input type="number" id="cLines" value="3" min="1" max="10"> baris
             </div>
             <div class="setting-item">
                 <input type="checkbox" id="toggleNumber" checked>
-                <label for="toggleNumber" style="cursor:pointer;">Auto-Numbering</label>
+                <label for="toggleNumber" style="cursor:pointer;">Smart Auto-Numbering</label>
             </div>
         </div>
-        <textarea id="rawInput" placeholder="Tempel soal di sini..."></textarea>
+        <textarea id="rawInput" placeholder="Tempel teks soal di sini. Bebas masukkan format Jawab: atau titik-titik (....) di mana saja."></textarea>
     </div>
     <div id="preview-panel" class="panel">
         <div class="preview-box" id="printArea" style="font-size: 12pt;">Masukan teks di tab Input terlebih dahulu.</div>
@@ -90,105 +103,126 @@
 </div>
 
 <div class="action-bar">
+    <button class="btn btn-clear" onclick="clearInput()">🗑️ Bersihkan</button>
     <button class="btn btn-format" onclick="processSoal()">⚙️ Proses</button>
     <button class="btn btn-print" onclick="window.print()">🖨️ Cetak</button>
-    <button class="btn btn-word" onclick="exportWord()">💾 Ke Word</button>
 </div>
 
 <script>
-    function openTab(id, btn) {
+    function openTab(id, index) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
         document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
-        if(id === 'preview-panel') processSoal();
+        document.querySelectorAll('.tab-btn')[index].classList.add('active');
+    }
+
+    function clearInput() {
+        if(confirm('Yakin ingin menghapus semua teks di kotak input?')) {
+            document.getElementById('rawInput').value = '';
+            document.getElementById('rawInput').focus();
+        }
     }
 
     function processSoal() {
         const text = document.getElementById('rawInput').value;
         const useAutoNumber = document.getElementById('toggleNumber').checked;
         const fontSize = document.getElementById('fontSize').value;
-        const cLinesCount = parseInt(document.getElementById('cLines').value) || 2;
-        
+        const cLinesCount = parseInt(document.getElementById('cLines').value) || 3;
+
         document.getElementById('printArea').style.fontSize = fontSize + 'pt';
 
-        const lines = text.split('\n');
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
+        
         let html = '';
         let inOpsiGrid = false;
         let soalCounter = 1;
         let currentSection = 'A';
 
         for (let i = 0; i < lines.length; i++) {
-            let line = lines[i].trim();
-            if (!line) continue;
+            let line = lines[i];
             let lowerLine = line.toLowerCase();
+            let nextLine = (i + 1 < lines.length) ? lines[i+1].toLowerCase() : '';
 
-            // 1. Judul
-            if (lowerLine.includes('latihan soal') || lowerLine.includes('mata pelajaran') || lowerLine.includes('kelas :') || lowerLine.includes('penilaian tengah')) {
+            // 1. Deteksi Instruksi (A. / B. / C.)
+            if (/^[A-E]\.\s/.test(line)) {
+                if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
+                currentSection = line.charAt(0).toUpperCase();
+                html += `<div class="instruksi">${line}</div>`;
+                soalCounter = 1;
+                continue;
+            }
+
+            // 2. Deteksi Judul
+            if (lowerLine.includes('latihan soal') || lowerLine.includes('mata pelajaran') || lowerLine.includes('kelas :') || lowerLine.includes('penilaian')) {
                 if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
                 html += `<div class="judul">${line}</div>`;
                 continue;
             }
 
-            // 2. Instruksi (A. / B. / C.)
-            if (/^[A-E]\.\s/.test(line)) {
-                if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
-                currentSection = line.charAt(0).toUpperCase();
-                html += `<div class="instruksi">${line}</div>`;
-                continue;
-            }
-
-            // 3. Opsi (a. / b. / c. / d.)
-            if (/^[a-e][\.\)]\s/.test(lowerLine)) {
+            // 3. Deteksi Opsi
+            if (/^[a-e][\.\)](?:\s+|$)/.test(lowerLine)) {
                 if (!inOpsiGrid) { html += '<div class="opsi-container">'; inOpsiGrid = true; }
                 html += `<div class="opsi-item">${line}</div>`;
                 continue;
             }
 
-            // 4. Ruang Jawaban Eksplisit (Jawab: / ..... )
-            if (lowerLine.startsWith('jawab') || lowerLine.includes('.....')) {
+            // 4. Deteksi Ruang Jawaban Manual Fleksibel
+            // Tangkap semua variasi "Jawab", "Jawaban", atau baris yang isinya hanya titik-titik
+            if (lowerLine.startsWith('jawab') || /^\.{3,}$/.test(lowerLine)) {
                 if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
                 let linesToDraw = (currentSection === 'C') ? cLinesCount : 1;
-                let dotsHtml = '';
-                for(let j=0; j<linesToDraw; j++) dotsHtml += '<div class="dot-line"></div>';
-                html += `<div class="ans-field"><i>Jawab:</i>${dotsHtml}</div>`;
+                
+                // Ambil teks aslinya jika ada (misal: "Jawab:"), jika hanya titik-titik, set default "Jawab:"
+                let prefixText = lowerLine.startsWith('jawab') ? line.split(/[\:\.]/)[0] + ':' : 'Jawab:';
+                
+                let dotsHtml = `<div class="ans-line-first"><i>${prefixText}</i><div class="dot-line flex-1"></div></div>`;
+                for(let j=1; j<linesToDraw; j++) {
+                    dotsHtml += '<div class="dot-line"></div>';
+                }
+                
+                html += `<div class="ans-field">${dotsHtml}</div>`;
                 continue;
             }
 
-            // 5. Soal (Fallback)
+            // 5. Teks Paragraf (Logika Soal vs Cerita)
             if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
-            
-            let finalLine = line;
+
+            let isSoal = false;
+
             if (useAutoNumber) {
-                finalLine = line.replace(/^\d+[\.\)]\s*/, '');
-                html += `<div class="soal-item"><div class="soal-number">${soalCounter}.</div><div class="soal-text">${finalLine}</div></div>`;
+                if (currentSection === 'A') {
+                    if (/^a[\.\)](?:\s+|$)/.test(nextLine)) isSoal = true;
+                } else if (currentSection === 'B') {
+                    isSoal = true;
+                } else if (currentSection === 'C') {
+                    // Cek jika baris bawahnya adalah "Jawab..." atau "...."
+                    if (nextLine.startsWith('jawab') || /^\.{3,}$/.test(nextLine)) isSoal = true;
+                }
+            }
+
+            let cleanLine = line;
+            if (isSoal && useAutoNumber) {
+                // Bersihkan nomor bawaan
+                cleanLine = cleanLine.replace(/^\d+[\.\)]\s*/, '');
+                
+                if (currentSection === 'B') {
+                    // Leburkan titik-titik di akhir agar rapi bersambung dengan garis
+                    cleanLine = cleanLine.replace(/\s*\.{2,}$/, '');
+                    html += `<div class="soal-item"><div class="soal-number">${soalCounter}.</div><div class="soal-text section-b-text">${cleanLine}<span class="dot-line-inline"></span></div></div>`;
+                } else {
+                    html += `<div class="soal-item"><div class="soal-number">${soalCounter}.</div><div class="soal-text">${cleanLine}</div></div>`;
+                }
                 soalCounter++;
             } else {
-                html += `<div class="soal-item">${finalLine}</div>`;
-            }
-
-            // Otomatis tambah 1 baris titik-titik khusus untuk Bagian B setelah teks soal
-            if (currentSection === 'B') {
-                html += `<div class="ans-field"><div class="dot-line"></div></div>`;
+                html += `<div class="cerita-text">${line}</div>`;
             }
         }
-        
+
         if(inOpsiGrid) html += '</div>';
+        
         document.getElementById('printArea').innerHTML = html || 'Tidak ada data untuk diproses.';
-        if (document.getElementById('preview-panel').classList.contains('active') === false) {
-             openTab('preview-panel', document.querySelectorAll('.tab-btn')[1]);
-        }
-    }
-
-    function exportWord() {
-        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Soal</title></head><body>";
-        const footer = "</body></html>";
-        const sourceHTML = header + document.getElementById("printArea").innerHTML + footer;
-        const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-        const link = document.createElement("a");
-        link.href = source;
-        link.download = 'Lembar_Soal_RoboPanda.doc';
-        link.click();
+        openTab('preview-panel', 1);
     }
 </script>
 </body>
