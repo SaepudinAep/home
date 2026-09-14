@@ -483,12 +483,27 @@
 
         document.getElementById('printArea').style.fontSize = fontSize + 'pt';
 
-        const lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
+        const rawLines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
+        
+        // PRE-PROCESSING: Tangani AI yang memisahkan nomor soal dengan teksnya
+        const lines = [];
+        for (let i = 0; i < rawLines.length; i++) {
+            // Jika baris ini HANYA berisi nomor (misal "1."), gabungkan dengan baris berikutnya
+            if (/^\d+[\.\)]$/.test(rawLines[i]) && i + 1 < rawLines.length) {
+                if (!rawLines[i+1].toLowerCase().startsWith('jawab')) {
+                    lines.push(rawLines[i] + ' ' + rawLines[i+1]);
+                    i++; // lewati baris berikutnya karena sudah digabung
+                    continue;
+                }
+            }
+            lines.push(rawLines[i]);
+        }
 
         let html = '';
         let inOpsiGrid = false;
         let soalCounter = 1;
         let currentSection = 'A';
+        let sectionType = 'PG'; // Dinamis mendeteksi jenis soal
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i];
@@ -499,6 +514,20 @@
             if (/^[A-E]\.\s/.test(line)) {
                 if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
                 currentSection = line.charAt(0).toUpperCase();
+                
+                // Deteksi pintar jenis soal dari judulnya
+                if (lowerLine.includes('pilihan ganda') || lowerLine.includes('silang')) {
+                    sectionType = 'PG';
+                } else if (lowerLine.includes('isian') || lowerLine.includes('melengkapi')) {
+                    sectionType = 'ISIAN';
+                } else if (lowerLine.includes('uraian') || lowerLine.includes('esai') || lowerLine.includes('essay') || lowerLine.includes('jawab')) {
+                    sectionType = 'URAIAN';
+                } else {
+                    if (currentSection === 'A') sectionType = 'PG';
+                    else if (currentSection === 'B') sectionType = 'ISIAN';
+                    else sectionType = 'URAIAN';
+                }
+
                 html += `<div class="instruksi">${line}</div>`;
                 soalCounter = 1;
                 continue;
@@ -531,7 +560,7 @@
             // 4. Deteksi Ruang Jawaban ("Jawab:", "Jawaban:", atau baris titik-titik)
             if (lowerLine.startsWith('jawab') || /^\.{3,}$/.test(lowerLine)) {
                 if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
-                let linesToDraw = (currentSection === 'C') ? cLinesCount : 1;
+                let linesToDraw = (sectionType === 'URAIAN' || currentSection === 'C') ? cLinesCount : 1;
                 let prefixText = lowerLine.startsWith('jawab')
                     ? line.split(/[\:\.]/)[0] + ':'
                     : 'Jawab:';
@@ -547,21 +576,29 @@
             // 5. Teks Paragraf / Soal
             if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
 
+            let originalHadNumber = /^\d+[\.\)]\s*/.test(line);
             let isSoal = false;
+
             if (useAutoNumber) {
-                if (currentSection === 'A') {
+                if (sectionType === 'PG') {
                     if (/^a[\.\)](?:\s+|$)/.test(nextLine)) isSoal = true;
-                } else if (currentSection === 'B') {
-                    isSoal = true;
-                } else if (currentSection === 'C') {
+                } else if (sectionType === 'ISIAN') {
+                    // Untuk Isian, baris dianggap soal jika ada titik-titik atau angka di awalnya
+                    if (/\.{2,}/.test(line) || originalHadNumber) isSoal = true;
+                } else if (sectionType === 'URAIAN') {
                     if (nextLine.startsWith('jawab') || /^\.{3,}$/.test(nextLine)) isSoal = true;
                 }
             }
 
             let cleanLine = line;
-            if (isSoal && useAutoNumber) {
+            if (useAutoNumber) {
+                // Hapus nomor bawaan AI dari SEMUA baris agar tidak ada nomor ganda di instruksi/cerita
                 cleanLine = cleanLine.replace(/^\d+[\.\)]\s*/, '');
+            }
+
+            if (isSoal && useAutoNumber) {
                 if (currentSection === 'B') {
+                    // Leburkan titik-titik di akhir agar rapi bersambung dengan garis
                     cleanLine = cleanLine.replace(/\s*\.{2,}$/, '');
                     html += `<div class="soal-item"><div class="soal-number">${soalCounter}.</div><div class="soal-text section-b-text">${cleanLine}<span class="dot-line-inline"></span></div></div>`;
                 } else {
@@ -569,7 +606,7 @@
                 }
                 soalCounter++;
             } else {
-                html += `<div class="cerita-text">${line}</div>`;
+                html += `<div class="cerita-text">${cleanLine}</div>`;
             }
         }
 
@@ -618,9 +655,10 @@ Format setiap soal:
         const bagianC = uraian > 0 ? `
 C. Uraian
 Buatkan ${uraian} soal uraian/esai tingkat kesulitan ${kesulitan}.
-Setiap soal diikuti baris "Jawab:" di bawahnya.
-Format setiap soal:
-[teks pertanyaan]
+Setiap soal HANYA SATU KALIMAT TANYA (1 baris saja) dan diikuti baris "Jawab:" tepat di bawahnya.
+JANGAN memberikan instruksi terpisah sebelum soal (misalnya "Tulislah kembali kalimat berikut:"). Langsung tuliskan pertanyaannya.
+Format setiap soal (Mutlak 2 baris):
+[nomor]. [Teks Pertanyaan Langsung]
 Jawab:
 
 ` : '';
@@ -650,8 +688,15 @@ ATURAN FORMAT — WAJIB DIIKUTI PERSIS:
 7. Untuk soal uraian, tulis "Jawab:" (tanpa tanda kurung) di baris baru setelah soal.
 8. Kosongkan satu baris antara setiap soal.
 9. JANGAN sertakan kunci jawaban dalam output.
+
+ATURAN KETAT (PENGHILANGAN KESALAHAN):
+10. SANGAT PENTING: Setiap pertanyaan HARUS UTUH 1 BARIS. DILARANG KERAS menekan ENTER / membuat baris baru di tengah kalimat soal!
+11. DILARANG memisahkan angka nomor soal dengan teks pertanyaannya. Keduanya harus berada di satu baris yang sama.
+12. DILARANG membuat nomor soal ganda/kembar dalam satu bagian.
+13. DILARANG memberi teks pengantar / instruksi tambahan per-soal. Langsung buat pertanyaannya saja.
+
 ${bagianA}${bagianB}${bagianC}
-Mulai sekarang, hasilkan soal sesuai format di atas.`;
+Mulai sekarang, hasilkan soal sesuai format di atas tanpa basa-basi.`;
 
         document.getElementById('promptOutput').value = prompt.trim();
     }
