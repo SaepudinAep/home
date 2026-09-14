@@ -543,7 +543,10 @@
                 lowerLine.includes('nama :') ||
                 lowerLine.includes('nama:') ||
                 lowerLine.includes('hari/tanggal') ||
-                lowerLine.includes('waktu :')
+                lowerLine.includes('waktu :') ||
+                lowerLine.includes('materi :') ||
+                lowerLine.includes('materi:') ||
+                lowerLine.includes('kisi-kisi')
             ) {
                 if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
                 html += `<div class="judul">${line}</div>`;
@@ -597,7 +600,7 @@
             }
 
             if (isSoal && useAutoNumber) {
-                if (currentSection === 'B') {
+                if (sectionType === 'ISIAN') {
                     // Leburkan titik-titik di akhir agar rapi bersambung dengan garis
                     cleanLine = cleanLine.replace(/\s*\.{2,}$/, '');
                     html += `<div class="soal-item"><div class="soal-number">${soalCounter}.</div><div class="soal-text section-b-text">${cleanLine}<span class="dot-line-inline"></span></div></div>`;
@@ -628,7 +631,10 @@
         const isian     = parseInt(document.getElementById('cfg-isian').value) || 0;
         const uraian    = parseInt(document.getElementById('cfg-uraian').value) || 0;
         const kesulitan = document.getElementById('cfg-kesulitan').value;
-        const materi    = document.getElementById('cfg-materi').value.trim() || '[isi materi / kisi-kisi]';
+        
+        const materiRaw = document.getElementById('cfg-materi').value.trim();
+        const materi    = materiRaw || '[isi materi / kisi-kisi]';
+        const headerMateri = materiRaw ? `\n   Materi : ${materiRaw}` : '';
 
         const bagianA = pg > 0 ? `
 A. Pilihan Ganda
@@ -675,7 +681,7 @@ ATURAN FORMAT — WAJIB DIIKUTI PERSIS:
    Latihan Soal ${jenis}
    Mata Pelajaran : ${mapel}
    Kelas : ${kelas}
-   Semester : ${semester}
+   Semester : ${semester}${headerMateri}
    Nama :
    Hari/Tanggal :
 
@@ -694,9 +700,10 @@ ATURAN KETAT (PENGHILANGAN KESALAHAN):
 11. DILARANG memisahkan angka nomor soal dengan teks pertanyaannya. Keduanya harus berada di satu baris yang sama.
 12. DILARANG membuat nomor soal ganda/kembar dalam satu bagian.
 13. DILARANG memberi teks pengantar / instruksi tambahan per-soal. Langsung buat pertanyaannya saja.
+14. Jika aku belum menyebutkan rincian jumlah soal (berapa PG, Isian, atau Uraian yang harus dibuat), JANGAN langsung membuat soal. WAJIB tanyakan terlebih dahulu kepadaku berapa jumlah soal untuk masing-masing bagian tersebut.
 
 ${bagianA}${bagianB}${bagianC}
-Mulai sekarang, hasilkan soal sesuai format di atas tanpa basa-basi.`;
+Mulai sekarang, patuhi format di atas. ${(pg === 0 && isian === 0 && uraian === 0) ? 'Tanyakan kepadaku berapa jumlah soal PG, Isian, dan Uraian yang ingin dibuat!' : 'Hasilkan soal sesuai format di atas tanpa basa-basi.'}`;
 
         document.getElementById('promptOutput').value = prompt.trim();
     }
