@@ -35,14 +35,14 @@ ter-hosting oleh Vercel.
 
 | Situasi | Isi "Endpoint Proxy" di aplikasi |
 |---|---|
-| Halaman di GitHub Pages *(kasus Anda)* | **`https://<nama-proyek>.vercel.app/api/ai`** (wajib lengkap) |
+| Halaman di GitHub Pages *(kasus Anda)* | **`https://home-phi-woad.vercel.app/api/ai`** (wajib lengkap) |
 | Halaman di-hosting di Vercel yang sama | biarkan `/api/ai` (relatif) |
 
 Di aplikasi `soal/index.html`:
 1. **Provider AI** = `Ollama` (default)
 2. **API Key** = key Ollama Anda *(bisa kosong jika `OLLAMA_API_KEY` sudah di-set di Vercel)*
 3. **Model AI** = `gemma4:31b` (default, sudah teruji) — alternatif: `gpt-oss:20b`
-4. **Endpoint Proxy** = `https://<nama-proyek>.vercel.app/api/ai`
+4. **Endpoint Proxy** = `https://home-phi-woad.vercel.app/api/ai`
 5. Klik **⚡ Generate Soal (NVIDIA AI)** → tombol kini memanggil proxy Anda.
 
 > ⚠️ **Catatan pengujian lokal:** Live Server biasa (8800/5500) **tidak** menyediakan `/api/ai`.
