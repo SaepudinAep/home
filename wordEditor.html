@@ -4,29 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Lembar Soal V8 - Smart & Flexible</title>
+    <title>Generator Lembar Soal - Smart & Flexible</title>
     <style>
         :root { --primary: #007bff; --success: #28a745; --danger: #dc3545; --bg: #f4f7f6; }
         body { font-family: Arial, sans-serif; background: var(--bg); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        :root {
+            --primary: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #f59e0b;
+            --purple: #7c3aed;
+            --bg: #f4f7f6;
+            --bg-white: #ffffff;
+            --text: #1f2937;
+            --text-muted: #6b7280;
+            --border: #d1d5db;
+            --shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
 
         .tabs { display: flex; background: white; border-bottom: 2px solid #ddd; z-index: 1000; flex-shrink: 0; }
         .tab-btn { flex: 1; padding: 15px; border: none; background: #f0f0f0; font-weight: bold; cursor: pointer; color: #444; font-size: 14px; transition: 0.3s; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            background: var(--bg-white);
+            border-bottom: 2px solid var(--border);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 14px 8px;
+            border: none;
+            background: #f0f0f0;
+            font-weight: bold;
+            cursor: pointer;
+            color: #555;
+            font-size: 13px;
+            transition: 0.2s;
+            border-bottom: 3px solid transparent;
+        }
         .tab-btn:hover { background: #e8e8e8; }
         .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); background: #ffffff; }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: var(--bg-white);
+        }
+        .tab-btn.tab-prompt.active {
+            color: var(--purple);
+            border-bottom-color: var(--purple);
+        }
 
         .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 80px; }
         .panel { display: none; padding: 15px; height: 100%; box-sizing: border-box; flex-direction: column; }
+        /* ── PANELS ── */
+        .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 72px; }
+        .panel { display: none; padding: 15px; flex: 1; flex-direction: column; }
         .panel.active { display: flex; }
 
         .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; background: white; padding: 15px; border-radius: 5px; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        /* ── SETTINGS ── */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+            background: var(--bg-white);
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
         .setting-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; color: #333; }
         .setting-item input[type="number"] { width: 50px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .setting-item input[type="number"] { width: 54px; padding: 5px; border: 1px solid var(--border); border-radius: 4px; }
         .setting-item input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
 
         textarea { flex: 1; width: 100%; box-sizing: border-box; padding: 15px; font-size: 15px; border: 1px solid #ccc; resize: none; font-family: inherit; line-height: 1.5; border-radius: 5px; }
+        /* ── TEXTAREA ── */
+        textarea {
+            flex: 1;
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            resize: none;
+            font-family: inherit;
+            line-height: 1.6;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+            transition: border-color 0.2s;
+        }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
 
         .preview-box { background: white; max-width: 800px; margin: 0 auto; padding: 1.5cm 2cm; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-family: 'Times New Roman', serif; line-height: 1.4; color: black; min-height: 297mm; }
+        /* ── PREVIEW ── */
+        .preview-box {
+            background: var(--bg-white);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5cm 2cm;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-family: 'Times New Roman', serif;
+            line-height: 1.4;
+            color: black;
+            min-height: 297mm;
+            border-radius: 4px;
+        }
 
         /* Layout Soal */
+        /* ── LAYOUT SOAL ── */
         .judul { text-align: center; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
         .instruksi { font-weight: bold; margin-top: 15px; margin-bottom: 8px; }
         
@@ -46,48 +146,192 @@
         .ans-field { padding-left: 2em; margin-bottom: 10px; margin-top: 2px; }
         .ans-line-first { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 6px; width: 100%; }
         .ans-line-first i { margin-bottom: 1px; }
+        .ans-line-first i { margin-bottom: 1px; font-style: normal; }
         .dot-line { border-bottom: 1px dotted #000; height: 18px; width: 100%; margin-bottom: 6px; }
         .dot-line.flex-1 { flex: 1; height: auto; border-bottom: 1px dotted #000; }
+        .dot-line.flex-1 { flex: 1; height: auto; }
 
         .action-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; gap: 10px; justify-content: center; box-sizing: border-box; z-index: 1000; }
         .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; font-size: 14px; flex: 1; max-width: 150px; transition: 0.2s; }
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        /* ── PROMPT PANEL ── */
+        .prompt-panel-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 860px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .prompt-info-box {
+            background: #ede9fe;
+            border-left: 4px solid var(--purple);
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #4c1d95;
+            line-height: 1.6;
+        }
+        .prompt-info-box strong { display: block; margin-bottom: 6px; font-size: 14px; }
+
+        .prompt-config {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+        .prompt-config h3 { font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .config-field { display: flex; flex-direction: column; gap: 5px; }
+        .config-field label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+        .config-field input, .config-field select, .config-field textarea {
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: none;
+        }
+        .config-field input:focus, .config-field select:focus { outline: none; border-color: var(--purple); }
+
+        .prompt-output-box {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .prompt-output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f5f3ff;
+            border-bottom: 1px solid #ddd6fe;
+        }
+        .prompt-output-header span { font-size: 13px; font-weight: 700; color: var(--purple); }
+        .prompt-output-header .copy-group { display: flex; gap: 8px; }
+
+        .btn-copy {
+            padding: 7px 14px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-copy:hover { background: #6d28d9; }
+        .btn-copy.copied { background: var(--success); }
+
+        .prompt-output-textarea {
+            width: 100%;
+            min-height: 280px;
+            padding: 16px;
+            font-size: 12.5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.65;
+            border: none;
+            resize: vertical;
+            color: #1e1b4b;
+            background: #fafaf9;
+        }
+        .prompt-output-textarea:focus { outline: none; }
+
+        .prompt-tips {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 12.5px;
+            color: #78350f;
+            line-height: 1.7;
+        }
+        .prompt-tips strong { display: block; margin-bottom: 6px; color: #92400e; }
+
+        /* ── ACTION BAR ── */
+        .action-bar {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background: var(--bg-white);
+            padding: 10px 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .btn {
+            padding: 11px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            font-size: 13px;
+            flex: 1;
+            max-width: 160px;
+            transition: 0.2s;
+        }
+        .btn:hover { opacity: 0.88; transform: translateY(-1px); }
         .btn-clear { background: var(--danger); }
         .btn-format { background: var(--primary); }
         .btn-print { background: var(--success); }
+        .btn-prompt { background: var(--purple); }
 
+        /* ── PRINT ── */
         @media print {
             body { background: white; height: auto; overflow: visible; }
             .tabs, .action-bar, #input-panel { display: none !important; }
+            .tabs, .action-bar, #input-panel, #prompt-panel { display: none !important; }
             .content { padding: 0; overflow: visible; }
             .panel { padding: 0; }
             .preview-box { box-shadow: none; padding: 0; max-width: 100%; margin: 0; }
+            #preview-panel { display: flex !important; }
+            .preview-box { box-shadow: none; padding: 0; max-width: 100%; margin: 0; border-radius: 0; }
             @page { margin: 1.2cm; }
         }
+
         @media (max-width: 600px) {
             .opsi-container { grid-template-columns: 1fr; }
             .preview-box { padding: 15px; }
             .section-b-text { flex-wrap: wrap; }
             .dot-line-inline { min-width: 100%; margin-left: 0; margin-top: 15px; }
+            .tab-btn { font-size: 11px; padding: 12px 4px; }
         }
     </style>
 </head>
 <body>
 
+<!-- ── TABS ── -->
 <div class="tabs">
     <button class="tab-btn active" onclick="openTab('input-panel', 0)">1. INPUT DATA</button>
     <button class="tab-btn" onclick="openTab('preview-panel', 1)">2. HASIL CETAK</button>
+    <button class="tab-btn tab-prompt" onclick="openTab('prompt-panel', 2)">3. 🤖 PROMPT AI</button>
 </div>
 
 <div class="content">
+    <!-- ─────────── TAB 1: INPUT ─────────── -->
     <div id="input-panel" class="panel active">
         <div class="settings-grid">
             <div class="setting-item">
                 <label>Ukuran Font:</label>
+                <label for="fontSize">Ukuran Font:</label>
                 <input type="number" id="fontSize" value="12" min="10" max="18"> pt
             </div>
             <div class="setting-item">
                 <label>Baris Bagian C:</label>
+                <label for="cLines">Baris Bagian C:</label>
                 <input type="number" id="cLines" value="3" min="1" max="10"> baris
             </div>
             <div class="setting-item">
@@ -96,19 +340,140 @@
             </div>
         </div>
         <textarea id="rawInput" placeholder="Tempel teks soal di sini. Bebas masukkan format Jawab: atau titik-titik (....) di mana saja."></textarea>
+
+        <textarea id="rawInput" placeholder="Tempel teks soal di sini.&#10;&#10;Format yang didukung:&#10;- Tulis &quot;A. Pilihan Ganda&quot; untuk memulai bagian A&#10;- Tulis &quot;B. Isian&quot; untuk bagian B&#10;- Tulis &quot;C. Uraian&quot; untuk bagian C&#10;- Opsi ditulis: a. ... / b. ... / c. ... / d. ...&#10;- Ruang jawaban: tulis &quot;Jawab:&quot; atau &quot;....&quot;&#10;&#10;Gunakan tab 🤖 PROMPT AI untuk membuat prompt yang menghasilkan format yang tepat."></textarea>
     </div>
+
+    <!-- ─────────── TAB 2: PREVIEW ─────────── -->
     <div id="preview-panel" class="panel">
         <div class="preview-box" id="printArea" style="font-size: 12pt;">Masukan teks di tab Input terlebih dahulu.</div>
+        <div class="preview-box" id="printArea" style="font-size: 12pt;">
+            Masukkan teks di tab <strong>1. Input Data</strong> lalu klik <strong>⚙️ Proses</strong>.
+        </div>
+    </div>
+
+    <!-- ─────────── TAB 3: PROMPT AI ─────────── -->
+    <div id="prompt-panel" class="panel">
+        <div class="prompt-panel-inner">
+
+            <div class="prompt-info-box">
+                <strong>🤖 Generator Prompt untuk AI Lain (ChatGPT, Gemini, Claude, dll.)</strong>
+                Isi form di bawah sesuai kebutuhan soal, lalu salin prompt yang dihasilkan dan tempel ke AI pilihanmu.
+                Teks yang dihasilkan AI akan <strong>langsung kompatibel</strong> saat di-paste ke tab Input Data di sini.
+            </div>
+
+            <!-- Konfigurasi Prompt -->
+            <div class="prompt-config">
+                <h3>⚙️ Konfigurasi Soal</h3>
+                <div class="config-grid">
+                    <div class="config-field">
+                        <label>Mata Pelajaran</label>
+                        <input type="text" id="cfg-mapel" placeholder="Matematika" oninput="buildPrompt()">
+                    </div>
+                    <div class="config-field">
+                        <label>Kelas</label>
+                        <select id="cfg-kelas" onchange="buildPrompt()">
+                            <option value="">-- Pilih --</option>
+                            <option value="1 SD">1 SD</option>
+                            <option value="2 SD">2 SD</option>
+                            <option value="3 SD">3 SD</option>
+                            <option value="4 SD" selected>4 SD</option>
+                            <option value="5 SD">5 SD</option>
+                            <option value="6 SD">6 SD</option>
+                            <option value="7 SMP">7 SMP</option>
+                            <option value="8 SMP">8 SMP</option>
+                            <option value="9 SMP">9 SMP</option>
+                        </select>
+                    </div>
+                    <div class="config-field">
+                        <label>Semester</label>
+                        <select id="cfg-semester" onchange="buildPrompt()">
+                            <option value="Ganjil">Ganjil</option>
+                            <option value="Genap">Genap</option>
+                        </select>
+                    </div>
+                    <div class="config-field">
+                        <label>Jenis Penilaian</label>
+                        <select id="cfg-jenis" onchange="buildPrompt()">
+                            <option value="Penilaian Harian (PH)">Penilaian Harian (PH)</option>
+                            <option value="Penilaian Tengah Semester (PTS)">PTS / UTS</option>
+                            <option value="Penilaian Akhir Semester (PAS)">PAS / UAS</option>
+                            <option value="Latihan Soal">Latihan Soal</option>
+                        </select>
+                    </div>
+                    <div class="config-field">
+                        <label>Jumlah Soal PG (Bagian A)</label>
+                        <input type="number" id="cfg-pg" value="10" min="0" max="30" oninput="buildPrompt()">
+                    </div>
+                    <div class="config-field">
+                        <label>Jumlah Soal Isian (Bagian B)</label>
+                        <input type="number" id="cfg-isian" value="5" min="0" max="20" oninput="buildPrompt()">
+                    </div>
+                    <div class="config-field">
+                        <label>Jumlah Soal Uraian (Bagian C)</label>
+                        <input type="number" id="cfg-uraian" value="5" min="0" max="15" oninput="buildPrompt()">
+                    </div>
+                    <div class="config-field">
+                        <label>Tingkat Kesulitan</label>
+                        <select id="cfg-kesulitan" onchange="buildPrompt()">
+                            <option value="mudah">Mudah</option>
+                            <option value="sedang" selected>Sedang</option>
+                            <option value="sulit">Sulit</option>
+                            <option value="campuran (mudah, sedang, dan sulit)">Campuran</option>
+                        </select>
+                    </div>
+                    <div class="config-field" style="grid-column: 1 / -1;">
+                        <label>Materi / Kisi-Kisi (pisahkan dengan koma)</label>
+                        <textarea id="cfg-materi" rows="2" placeholder="Pecahan, Desimal, Persen, KPK dan FPB" oninput="buildPrompt()"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Prompt -->
+            <div class="prompt-output-box">
+                <div class="prompt-output-header">
+                    <span>📋 Prompt Siap Pakai — Salin & Tempel ke AI</span>
+                    <div class="copy-group">
+                        <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">📋 Salin Prompt</button>
+                        <button class="btn-copy" style="background:#0ea5e9;" onclick="pasteToInput()">📥 Tempel Hasil ke Input</button>
+                    </div>
+                </div>
+                <textarea class="prompt-output-textarea" id="promptOutput" readonly></textarea>
+            </div>
+
+            <!-- Tips Format -->
+            <div class="prompt-tips">
+                <strong>📌 Cara Penggunaan:</strong>
+                <ol style="padding-left: 18px; margin-top: 4px;">
+                    <li>Isi form konfigurasi di atas sesuai kebutuhan soal.</li>
+                    <li>Klik <strong>📋 Salin Prompt</strong> lalu tempel ke ChatGPT / Gemini / Claude / dll.</li>
+                    <li>Setelah AI menjawab, salin seluruh teks hasilnya.</li>
+                    <li>Kembali ke tab <strong>1. Input Data</strong> dan tempel teks tersebut (atau klik <strong>📥 Tempel Hasil ke Input</strong> setelah menyalin).</li>
+                    <li>Klik <strong>⚙️ Proses</strong> untuk melihat hasilnya dalam format cetak A4.</li>
+                </ol>
+                <div style="margin-top: 10px; padding: 8px 12px; background: #fef3c7; border-radius: 4px; font-size: 12px;">
+                    ⚠️ Pastikan AI tidak menambahkan markdown (<code>**bold**</code>, <code>##</code>, <code>---</code>) karena akan mempengaruhi hasil format.
+                    Prompt ini sudah meminta AI untuk hanya menggunakan format teks biasa.
+                </div>
+            </div>
+
+        </div><!-- /prompt-panel-inner -->
     </div>
 </div>
 
+<!-- ── ACTION BAR ── -->
 <div class="action-bar">
     <button class="btn btn-clear" onclick="clearInput()">🗑️ Bersihkan</button>
     <button class="btn btn-format" onclick="processSoal()">⚙️ Proses</button>
     <button class="btn btn-print" onclick="window.print()">🖨️ Cetak</button>
+    <button class="btn btn-print" onclick="printSoal()">🖨️ Cetak</button>
+    <button class="btn btn-prompt" onclick="openTab('prompt-panel', 2)">🤖 Prompt AI</button>
 </div>
 
 <script>
+    // ─────────────────────────────────────────────
+    // Tab navigation
+    // ─────────────────────────────────────────────
     function openTab(id, index) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -117,15 +482,37 @@
         document.querySelectorAll('.tab-btn')[index].classList.add('active');
     }
 
+    // ─────────────────────────────────────────────
+    // Clear & print
+    // ─────────────────────────────────────────────
     function clearInput() {
         if(confirm('Yakin ingin menghapus semua teks di kotak input?')) {
+        if (confirm('Yakin ingin menghapus semua teks di kotak input?')) {
             document.getElementById('rawInput').value = '';
             document.getElementById('rawInput').focus();
         }
     }
 
+    function printSoal() {
+        if (!document.getElementById('printArea').innerHTML.trim() ||
+            document.getElementById('printArea').innerHTML.includes('Masukkan teks')) {
+            alert('Proses soal terlebih dahulu sebelum mencetak.');
+            return;
+        }
+        window.print();
+    }
+
+    // ─────────────────────────────────────────────
+    // Proses soal → preview
+    // ─────────────────────────────────────────────
     function processSoal() {
         const text = document.getElementById('rawInput').value;
+        const text = document.getElementById('rawInput').value.trim();
+        if (!text) {
+            alert('Kotak input masih kosong. Tempel teks soal terlebih dahulu.');
+            return;
+        }
+
         const useAutoNumber = document.getElementById('toggleNumber').checked;
         const fontSize = document.getElementById('fontSize').value;
         const cLinesCount = parseInt(document.getElementById('cLines').value) || 3;
@@ -134,6 +521,7 @@
 
         const lines = text.split('\n').map(l => l.trim()).filter(l => l !== '');
         
+
         let html = '';
         let inOpsiGrid = false;
         let soalCounter = 1;
@@ -143,10 +531,13 @@
             let line = lines[i];
             let lowerLine = line.toLowerCase();
             let nextLine = (i + 1 < lines.length) ? lines[i+1].toLowerCase() : '';
+            let nextLine = (i + 1 < lines.length) ? lines[i + 1].toLowerCase() : '';
 
             // 1. Deteksi Instruksi (A. / B. / C.)
+            // 1. Deteksi Instruksi bagian (A. / B. / C.)
             if (/^[A-E]\.\s/.test(line)) {
                 if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
+                if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
                 currentSection = line.charAt(0).toUpperCase();
                 html += `<div class="instruksi">${line}</div>`;
                 soalCounter = 1;
@@ -156,11 +547,25 @@
             // 2. Deteksi Judul
             if (lowerLine.includes('latihan soal') || lowerLine.includes('mata pelajaran') || lowerLine.includes('kelas :') || lowerLine.includes('penilaian')) {
                 if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
+            // 2. Deteksi Judul / header soal
+            if (
+                lowerLine.includes('latihan soal') ||
+                lowerLine.includes('mata pelajaran') ||
+                lowerLine.includes('kelas :') ||
+                lowerLine.includes('kelas:') ||
+                lowerLine.includes('penilaian') ||
+                lowerLine.includes('nama :') ||
+                lowerLine.includes('nama:') ||
+                lowerLine.includes('hari/tanggal') ||
+                lowerLine.includes('waktu :')
+            ) {
+                if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
                 html += `<div class="judul">${line}</div>`;
                 continue;
             }
 
             // 3. Deteksi Opsi
+            // 3. Deteksi Opsi pilihan (a. / b. / c. / d. / a) / b) ...)
             if (/^[a-e][\.\)](?:\s+|$)/.test(lowerLine)) {
                 if (!inOpsiGrid) { html += '<div class="opsi-container">'; inOpsiGrid = true; }
                 html += `<div class="opsi-item">${line}</div>`;
@@ -169,15 +574,22 @@
 
             // 4. Deteksi Ruang Jawaban Manual Fleksibel
             // Tangkap semua variasi "Jawab", "Jawaban", atau baris yang isinya hanya titik-titik
+            // 4. Deteksi Ruang Jawaban ("Jawab:", "Jawaban:", atau baris titik-titik)
             if (lowerLine.startsWith('jawab') || /^\.{3,}$/.test(lowerLine)) {
                 if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
+                if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
                 let linesToDraw = (currentSection === 'C') ? cLinesCount : 1;
                 
                 // Ambil teks aslinya jika ada (misal: "Jawab:"), jika hanya titik-titik, set default "Jawab:"
                 let prefixText = lowerLine.startsWith('jawab') ? line.split(/[\:\.]/)[0] + ':' : 'Jawab:';
                 
+                let prefixText = lowerLine.startsWith('jawab')
+                    ? line.split(/[\:\.]/)[0] + ':'
+                    : 'Jawab:';
+
                 let dotsHtml = `<div class="ans-line-first"><i>${prefixText}</i><div class="dot-line flex-1"></div></div>`;
                 for(let j=1; j<linesToDraw; j++) {
+                for (let j = 1; j < linesToDraw; j++) {
                     dotsHtml += '<div class="dot-line"></div>';
                 }
                 
@@ -187,6 +599,8 @@
 
             // 5. Teks Paragraf (Logika Soal vs Cerita)
             if(inOpsiGrid){ html += '</div>'; inOpsiGrid = false; }
+            // 5. Teks Paragraf / Soal
+            if (inOpsiGrid) { html += '</div>'; inOpsiGrid = false; }
 
             let isSoal = false;
 
@@ -222,8 +636,134 @@
         if(inOpsiGrid) html += '</div>';
         
         document.getElementById('printArea').innerHTML = html || 'Tidak ada data untuk diproses.';
+        if (inOpsiGrid) html += '</div>';
+
+        document.getElementById('printArea').innerHTML = html || '<em>Tidak ada data untuk diproses.</em>';
         openTab('preview-panel', 1);
     }
+
+    // ─────────────────────────────────────────────
+    // Build Prompt AI
+    // ─────────────────────────────────────────────
+    function buildPrompt() {
+        const mapel     = document.getElementById('cfg-mapel').value.trim() || '[Mata Pelajaran]';
+        const kelas     = document.getElementById('cfg-kelas').value || '[Kelas]';
+        const semester  = document.getElementById('cfg-semester').value;
+        const jenis     = document.getElementById('cfg-jenis').value;
+        const pg        = parseInt(document.getElementById('cfg-pg').value) || 0;
+        const isian     = parseInt(document.getElementById('cfg-isian').value) || 0;
+        const uraian    = parseInt(document.getElementById('cfg-uraian').value) || 0;
+        const kesulitan = document.getElementById('cfg-kesulitan').value;
+        const materi    = document.getElementById('cfg-materi').value.trim() || '[isi materi / kisi-kisi]';
+
+        const bagianA = pg > 0 ? `
+A. Pilihan Ganda
+Buatkan ${pg} soal pilihan ganda tingkat kesulitan ${kesulitan}.
+Setiap soal memiliki 4 pilihan jawaban: a, b, c, d.
+Format setiap soal:
+[teks pertanyaan]
+a. [pilihan a]
+b. [pilihan b]
+c. [pilihan c]
+d. [pilihan d]
+
+` : '';
+
+        const bagianB = isian > 0 ? `
+B. Isian Singkat
+Buatkan ${isian} soal isian singkat tingkat kesulitan ${kesulitan}.
+Setiap soal adalah kalimat dengan titik-titik sebagai tempat jawaban.
+Format setiap soal:
+[teks soal dengan titik-titik .... di tempat jawaban]
+
+` : '';
+
+        const bagianC = uraian > 0 ? `
+C. Uraian
+Buatkan ${uraian} soal uraian/esai tingkat kesulitan ${kesulitan}.
+Setiap soal diikuti baris "Jawab:" di bawahnya.
+Format setiap soal:
+[teks pertanyaan]
+Jawab:
+
+` : '';
+
+        const prompt = `Kamu adalah guru SD/SMP yang membuat soal ujian. Buatkan soal ${jenis} untuk:
+
+Mata Pelajaran : ${mapel}
+Kelas          : ${kelas}
+Semester       : ${semester}
+Materi         : ${materi}
+
+ATURAN FORMAT — WAJIB DIIKUTI PERSIS:
+1. Tulis header soal di baris pertama persis seperti ini (masing-masing satu baris):
+   Latihan Soal ${jenis}
+   Mata Pelajaran : ${mapel}
+   Kelas : ${kelas}
+   Semester : ${semester}
+   Nama :
+   Hari/Tanggal :
+
+2. Gunakan penanda bagian PERSIS seperti ini (tanpa modifikasi):${pg > 0 ? '\n   A. Pilihan Ganda' : ''}${isian > 0 ? '\n   B. Isian Singkat' : ''}${uraian > 0 ? '\n   C. Uraian' : ''}
+
+3. JANGAN gunakan markdown: tidak ada **, tidak ada #, tidak ada ---, tidak ada *italic*.
+4. Tulis opsi pilihan ganda dengan: a. b. c. d. (huruf kecil, titik, spasi)
+5. Nomor soal ditulis: 1. 2. 3. (angka, titik, spasi)
+6. Untuk soal isian, titik-titik ditulis langsung dalam kalimat: ....
+7. Untuk soal uraian, tulis "Jawab:" (tanpa tanda kurung) di baris baru setelah soal.
+8. Kosongkan satu baris antara setiap soal.
+9. JANGAN sertakan kunci jawaban dalam output.
+${bagianA}${bagianB}${bagianC}
+Mulai sekarang, hasilkan soal sesuai format di atas.`;
+
+        document.getElementById('promptOutput').value = prompt.trim();
+    }
+
+    // ─────────────────────────────────────────────
+    // Salin prompt ke clipboard
+    // ─────────────────────────────────────────────
+    function copyPrompt() {
+        const output = document.getElementById('promptOutput');
+        const text = output.value;
+        if (!text) { alert('Isi form konfigurasi terlebih dahulu.'); return; }
+
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.getElementById('copyBtn');
+            const orig = btn.textContent;
+            btn.textContent = '✅ Tersalin!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+        }).catch(() => {
+            output.select();
+            document.execCommand('copy');
+            alert('Prompt berhasil disalin!');
+        });
+    }
+
+    // ─────────────────────────────────────────────
+    // Tempel hasil AI langsung ke textarea Input
+    // ─────────────────────────────────────────────
+    function pasteToInput() {
+        navigator.clipboard.readText().then(text => {
+            if (!text.trim()) {
+                alert('Clipboard kosong. Salin dulu hasil dari AI, lalu klik tombol ini.');
+                return;
+            }
+            document.getElementById('rawInput').value = text;
+            openTab('input-panel', 0);
+            // Auto-proses jika ada konten
+            setTimeout(() => processSoal(), 100);
+        }).catch(() => {
+            alert('Tidak bisa membaca clipboard secara otomatis.\n\nSalin teks hasil AI, buka tab "1. Input Data", lalu tempel (Ctrl+V) di sana.');
+        });
+    }
+
+    // ─────────────────────────────────────────────
+    // Init: bangun prompt saat halaman dibuka
+    // ─────────────────────────────────────────────
+    window.onload = function () {
+        buildPrompt();
+    };
 </script>
 </body>
 </html>

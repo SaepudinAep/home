@@ -1953,7 +1953,14 @@ PENTING:
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok) {
-                    throw new Error((data && (data.error || data.detail)) || `Gagal menghubungi AI proxy (HTTP ${response.status})`);
+                    const errMsg =
+                        (data && typeof data.error === 'string' && data.error) ||
+                        (data && data.error && typeof data.error.message === 'string' && data.error.message) ||
+                        (data && data.detail) ||
+                        (data && data.raw && typeof data.raw.detail === 'string' && data.raw.detail) ||
+                        (data && data.raw && data.raw.error && typeof data.raw.error.message === 'string' && data.raw.error.message) ||
+                        `Gagal menghubungi AI proxy (HTTP ${response.status})`;
+                    throw new Error(String(errMsg));
                 }
 
                 const responseText = String(

@@ -50,7 +50,11 @@ export default async function handler(req, res) {
 
       const data = await p.json().catch(() => ({}));
       const content = (data && data.message && typeof data.message.content === 'string') ? data.message.content : '';
-      return res.status(p.ok ? 200 : (data.status || p.status || 500)).json({ content, raw: data });
+      const status = p.ok ? 200 : (data.status || p.status || 500);
+      const body = p.ok
+        ? { content, raw: data }
+        : { error: extractErr(data, p.status), raw: data };
+      return res.status(status).json(body);
     }
 
     if (provider === 'nvidia') {
@@ -65,7 +69,11 @@ export default async function handler(req, res) {
 
       const data = await p.json().catch(() => ({}));
       const content = (data && data.choices && data.choices[0] && data.choices[0].message && typeof data.choices[0].message.content === 'string') ? data.choices[0].message.content : '';
-      return res.status(p.ok ? 200 : (data.status || p.status || 500)).json({ content, raw: data });
+      const status = p.ok ? 200 : (data.status || p.status || 500);
+      const body = p.ok
+        ? { content, raw: data }
+        : { error: extractErr(data, p.status), raw: data };
+      return res.status(status).json(body);
     }
 
     return res.status(400).json({ error: 'Provider tidak dikenal. Gunakan "ollama" atau "nvidia".' });
@@ -76,6 +84,18 @@ export default async function handler(req, res) {
 }
 
 // ---- Helpers ----------------------------------------------------------
+function extractErr(data, status) {
+  if (!data) return 'Upstream AI gagal (HTTP ' + status + ')';
+  if (typeof data.error === 'string' && data.error) return data.error;
+  if (data.error && typeof data.error === 'object') {
+    if (typeof data.error.message === 'string') return data.error.message;
+    if (typeof data.error.detail === 'string') return data.error.detail;
+  }
+  if (typeof data.detail === 'string' && data.detail) return data.detail;
+  if (typeof data.message === 'string' && data.message) return data.message;
+  return 'Upstream AI gagal (HTTP ' + status + ')';
+}
+
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let data = '';
