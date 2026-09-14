@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Soal Latihan UTS/PTS - AI Powered</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ea580c;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: #111827;
+                --bg-white: #1f2937;
+                --text-primary: #f3f4f6;
+                --text-secondary: #d1d5db;
+                --border: #374151;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .sidebar {
+            background: var(--bg-white);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .toolbar {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: var(--bg-light);
+        }
+
+        .soal-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-primary);
+            background: var(--bg-white);
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-white);
+            color: var(--text-primary);
+        }
+
+        button:hover {
+            background: var(--bg-light);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .kisi-item {
+            background: var(--bg-light);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .kisi-item.selected {
+            background: rgba(37, 99, 235, 0.1);
+            border-left-color: var(--success);
+        }
+
+        .checkbox-input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .settings-group {
+            background: var(--bg-light);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-item label {
+            margin: 0;
+            flex: 1;
+        }
+
+        .pts-header-box {
+            border: 2px solid #047857;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #ffffff;
+            color: #111827;
+        }
+
+        .pts-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            color: #047857;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pts-subtitle {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 15px;
+        }
+
+        .identitas-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr 1fr;
+            gap: 10px;
+            background: #f0fdf4;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #bbf7d0;
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #166534;
+        }
+
+        .petunjuk-box {
+            background: #fffbea;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #78350f;
+        }
+
+        .petunjuk-box ol {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: #047857;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .soal-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .soal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .soal-no {
+            font-weight: 700;
+            color: #047857;
+            font-size: 14px;
+        }
+
+        .soal-pertanyaan {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .opsi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .opsi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .opsi {
+            padding: 8px 12px;
+            background: #f9fafb;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        .opsi.jawaban-benar {
+            border-color: #16a34a;
+            background: #f0fdf4;
+            font-weight: 600;
+            color: #15803d;
+        }
+
+        .jawaban-section {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .jawaban-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #16a34a;
+            text-transform: uppercase;
+        }
+
+        .jawaban-text {
+            background: #f0fdf4;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border-left: 3px solid #16a34a;
+            font-size: 13px;
+        }
+
+        .pembahasan {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #fff7ed;
+            border-left: 3px solid #ea580c;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #9a3412;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 50px 20px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .font-size-control input {
+            width: 70px;
+        }
+
+        @media print {
+            .sidebar, .toolbar {
+                display: none !important;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+                padding: 0;
+            }
+
+            .main {
+                border: none;
+                box-shadow: none;
+            }
+
+            .soal-container {
+                padding: 0;
+                background: white !important;
+                color: black !important;
+            }
+
+            .pts-header-box {
+                border-color: #000 !important;
+            }
+
+            .section-badge {
+                background: #000 !important;
+                color: #fff !important;
+            }
+
+            .soal-item {
+                border-color: #ddd !important;
+                page-break-inside: avoid;
+            }
+
+            .opsi {
+                background: white !important;
+                border-color: #ccc !important;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h2>Setup Generator Soal</h2>
+
+            <div class="form-group">
+                <label>NVIDIA API Key</label>
+                <input type="password" id="apiKeyInput" placeholder="nvapi-..." value="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">
+            </div>
+
+            <div class="form-group">
+                <label>Pilih Kelas</label>
+                <select id="kelasDropdown" onchange="updateMataPelajaran()">
+                    <option value="">-- Pilih Kelas --</option>
+                    <option value="3">Kelas 3 SD</option>
+                    <option value="4" selected>Kelas 4 SD</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Pilih Mata Pelajaran</label>
+                <select id="mataPelajaranDropdown" onchange="updateKisiList()">
+                    <option value="">-- Pilih Mata Pelajaran --</option>
+                </select>
+            </div>
+
+            <h3>Kisi-Kisi Materi</h3>
+
+            <div class="form-group">
+                <label>Pilih Kisi-Kisi</label>
+                <select id="kisiQuickSelect" onchange="tambahKisiDariQuick()">
+                    <option value="">-- Pilih Kisi-Kisi --</option>
+                </select>
+            </div>
+
+            <div id="kisiList" style="max-height: 160px; overflow-y: auto; margin-bottom: 15px;"></div>
+
+            <h3>Pengaturan Soal</h3>
+
+            <div class="form-group">
+                <label>Jumlah Soal PG</label>
+                <input type="number" id="jumlahPG" value="10" min="1" max="25">
+            </div>
+
+            <div class="form-group">
+                <label>Jumlah Soal Esai</label>
+                <input type="number" id="jumlahEsai" value="5" min="1" max="10">
+            </div>
+
+            <div class="form-group">
+                <label>Tingkat Kesulitan</label>
+                <select id="tingkatKesulitan">
+                    <option value="mudah">Mudah</option>
+                    <option value="sedang" selected>Sedang</option>
+                    <option value="sulit">Sulit</option>
+                </select>
+            </div>
+
+            <h3>Pengaturan Tampilan</h3>
+
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label for="tampilkanJawaban">Tampilkan Kunci Jawaban</label>
+                    <input type="checkbox" id="tampilkanJawaban" class="checkbox-input">
+                </div>
+                <div class="setting-item">
+                    <label for="tampilkanPembahasan">Tampilkan Pembahasan</label>
+                    <input type="checkbox" id="tampilkanPembahasan" class="checkbox-input">
+                </div>
+            </div>
+
+            <div class="btn-group" style="flex-direction: column;">
+                <button class="btn-primary" onclick="generateSoal()" style="flex: 1; padding: 12px; font-weight: 600;">
+                    ⚡ Generate Soal (NVIDIA AI)
+                </button>
+                <button id="editAnswerBtn" onclick="toggleEditMode()" style="display:none; margin-top: 8px;">
+                    ✏️ Edit Jawaban
+                </button>
+                <div style="display: flex; gap: 8px; margin-top: 8px;">
+                    <button onclick="printSoal()" style="flex: 1;">🖨️ Cetak A4</button>
+                    <button onclick="exportPDF()" style="flex: 1;">📥 Download PDF</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN AREA -->
+        <div class="main">
+            <div class="toolbar">
+                <div style="flex: 1;">
+                    <span style="font-size: 13px; font-weight: 600;" id="soalInfo">Belum ada soal tergenerate</span>
+                </div>
+                <div class="font-size-control">
+                    <label style="margin: 0; font-size: 12px;">Ukuran Font:</label>
+                    <input type="range" id="fontSize" min="12" max="20" value="14" step="1" onchange="changeFontSize()">
+                    <span style="font-size: 12px; min-width: 25px;" id="fontSizeValue">14px</span>
+                </div>
+            </div>
+
+            <div class="soal-container" id="soalContainer">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📄</div>
+                    <p style="font-weight: 600;">Format Lembar Soal Ujian A4 Interaktif</p>
+                    <p style="font-size: 13px; margin-top: 8px;">Pilih mata pelajaran dan kisi-kisi di sidebar, lalu klik <strong>Generate Soal</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let soalData = [];
+        let kisiList = [];
+        let editMode = false;
+        let currentKelas = '';
+        let currentMataPelajaran = '';
+
+        // Database Kisi-Kisi per Kelas & Mata Pelajaran Lengkap
+        const kisiDatabase = {
+            '3': {
+                'B.Indonesia': [
+                    'Tanda baca dan kegunaannya',
+                    'Huruf kapital dalam kehidupan sehari-hari',
+                    'Kalimat tunggal',
+                    'Fakta dan fiksi',
+                    'Manfaat kerjasama di sekolah',
+                    'Membuat contoh kalimat tunggal',
+                    'Menulis tegak bersambung'
+                ],
+                'IPAS': [
+                    'Bagian tubuh katak yg berfungsi untuk melompat',
+                    'Dua penggolongan jenis hewan',
+                    'Hewan yang hidup di dua alam disebut',
+                    'Hewan kaki beruas',
+                    'Siklus hidup katak',
+                    'Perubahan bentuk pada siklus hidup',
+                    'Perkembang biakan hewan',
+                    'Mamalia adalah hewan yang',
+                    'Perbedaan metamorfosis tidak sempurna dan sempurna'
+                ],
+                'Matematika': [
+                    'Nilai tempat',
+                    'Penjumlahan, pengurangan, perkalian, pembagian'
+                ],
+                'B.Cirebon': [
+                    'Satowan',
+                    'Wiwitan sing duwe woh sing bisa dipangan',
+                    'Ana wedus sepuluh. Bebasane',
+                    'Ireng bebasane',
+                    'Bengi bebasane',
+                    'Bebasane ayam',
+                    'Esuk-esuk Ibnu oli'
+                ],
+                'PJOK': [
+                    'Gerak lokomotor dan non lokomotor',
+                    'Aktifitas gerak menekuk, mengayun, melangkah',
+                    'Perbedaan meloncat dan melompat',
+                    'Contoh gerakan lokomotor, non lokomotor, menekuk'
+                ]
+            },
+            '4': {
+                'PAI': [
+                    'Surah al-hujurat',
+                    'Asmaul husna',
+                    'Sikap taqwa di rumah'
+                ],
+                'PPKN': [
+                    'Identitas masyarakat (RT, RW, kelurahan, kecamatan)',
+                    'Perbedaan kepala desa dan lurah',
+                    'Unsur-unsur identitas diri',
+                    'Perangkat desa'
+                ],
+                'B.Indonesia': [
+                    'Makna denotatif dan konotatif',
+                    'Fobia',
+                    'Kalimat transitif dan intransitif',
+                    'Teks prosedur',
+                    'Kalimat majemuk',
+                    'Awalan me-',
+                    'Kata hubung atau konjungsi',
+                    'Homonim'
+                ],
+                'B.Sunda': [
+                    'Pupujian',
+                    'Pakasaban',
+                    'Parabot tradisional',
+                    'Macam-macam energi'
+                ],
+                'B.Inggris': [
+                    'Waktu dalam bahasa inggris',
+                    'What do they do in the morning',
+                    'Favorite food'
+                ],
+                'IPAS': [
+                    'Perubahan energi',
+                    'Fotosintesis',
+                    'Macam-macam gaya',
+                    'Magnet'
+                ],
+                'Matematika': [
+                    'Membaca dan menulis bilangan sampai 10.000',
+                    'Operasi hitung bilangan sampai 10.000'
+                ],
+                'SBDP': [
+                    'Sketsa',
+                    'Alat musik dinamis dan pentatonis',
+                    'Permainan tradisional',
+                    'Pantomim'
+                ],
+                'B.Cirebon': [
+                    'Tembang Pucung',
+                    'Guru wilangan lan guru lagu',
+                    'Macem satoan alas lan satoan diopeni'
+                ],
+                'PJOK': [
+                    'Gerak lokomotor dan non lokomotor',
+                    'Perbedaan jalan dan lari',
+                    'Permainan bola besar dan rounders',
+                    'Manfaat dan bagian-bagian dalam renang'
+                ]
+            }
+        };
+
+        // Initialize default view
+        window.onload = function() {
+            const savedKey = localStorage.getItem('nvidia_api_key');
+            if (savedKey) {
+                document.getElementById('apiKeyInput').value = savedKey;
+            }
+            updateMataPelajaran();
+        };
+
+        function updateMataPelajaran() {
+            const kelas = document.getElementById('kelasDropdown').value;
+            const mataPelajaranSelect = document.getElementById('mataPelajaranDropdown');
+
+            currentKelas = kelas;
+            mataPelajaranSelect.innerHTML = '<option value="">-- Pilih Mata Pelajaran --</option>';
+
+            if (kelas && kisiDatabase[kelas]) {
+                Object.keys(kisiDatabase[kelas]).forEach(mp => {
+                    const option = document.createElement('option');
+                    option.value = mp;
+                    option.textContent = mp;
+                    mataPelajaranSelect.appendChild(option);
+                });
+            }
+
+            kisiList = [];
+            renderKisiList();
+        }
+
+        function updateKisiList() {
+            const mataPelajaran = document.getElementById('mataPelajaranDropdown').value;
+            const kisiSelect = document.getElementById('kisiQuickSelect');
+
+            currentMataPelajaran = mataPelajaran;
+            kisiSelect.innerHTML = '<option value="">-- Pilih Kisi-Kisi --</option>';
+            kisiList = [];
+            renderKisiList();
+
+            if (mataPelajaran && currentKelas && kisiDatabase[currentKelas][mataPelajaran]) {
+                const kisis = kisiDatabase[currentKelas][mataPelajaran];
+                kisis.forEach(kisi => {
+                    const option = document.createElement('option');
+                    option.value = kisi;
+                    option.textContent = kisi;
+                    kisiSelect.appendChild(option);
+                });
+            }
+        }
+
+        function tambahKisiDariQuick() {
+            const kisiSelect = document.getElementById('kisiQuickSelect');
+            const kisi = kisiSelect.value.trim();
+
+            if (!kisi) return;
+
+            if (kisiList.includes(kisi)) {
+                alert('Kisi-kisi sudah ada dalam daftar');
+                return;
+            }
+
+            kisiList.push(kisi);
+            kisiSelect.value = '';
+            renderKisiList();
+        }
+
+        function renderKisiList() {
+            const container = document.getElementById('kisiList');
+            container.innerHTML = kisiList.map((kisi, idx) => `
+                <div class="kisi-item selected">
+                    <span>${kisi}</span>
+                    <button class="btn-small" onclick="hapusKisi(${idx})" style="background: rgba(220,38,38,0.1); color: var(--danger); border: none; padding: 2px 6px;">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function hapusKisi(idx) {
+            kisiList.splice(idx, 1);
+            renderKisiList();
+        }
+
+        function changeFontSize() {
+            const size = document.getElementById('fontSize').value;
+            document.getElementById('fontSizeValue').textContent = size + 'px';
+            document.getElementById('soalContainer').style.fontSize = size + 'px';
+        }
+
+        async function generateSoal() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            const mataPelajaran = document.getElementById('mataPelajaranDropdown').value;
+            const kelasValue = document.getElementById('kelasDropdown').value;
+            const kelas = kelasValue ? `Kelas ${kelasValue} SD` : '';
+            const jumlahPG = parseInt(document.getElementById('jumlahPG').value);
+            const jumlahEsai = parseInt(document.getElementById('jumlahEsai').value);
+            const tingkatKesulitan = document.getElementById('tingkatKesulitan').value;
+
+            if (!apiKey) {
+                alert('Masukkan NVIDIA API Key terlebih dahulu');
+                return;
+            }
+
+            if (!mataPelajaran || !kelas) {
+                alert('Pilih kelas dan mata pelajaran terlebih dahulu');
+                return;
+            }
+
+            if (kisiList.length === 0) {
+                alert('Tambahkan minimal 1 kisi-kisi');
+                return;
+            }
+
+            localStorage.setItem('nvidia_api_key', apiKey);
+
+            const container = document.getElementById('soalContainer');
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span style="font-weight:600;">Sedang membuat ${jumlahPG} Soal PG & ${jumlahEsai} Soal Esai via NVIDIA AI...</span>
+                    <span style="font-size:12px; color:#6b7280;">Mata Pelajaran: ${mataPelajaran} | Kisi-kisi: ${kisiList.join(', ')}</span>
+                </div>
+            `;
+
+            try {
+                const prompt = `
+Buatkan ${jumlahPG} soal pilihan ganda dan ${jumlahEsai} soal esai berkualitas tinggi untuk anak SD dengan ketentuan:
+
+Mata Pelajaran: ${mataPelajaran}
+Tingkat Sekolah: ${kelas}
+Kisi-Kisi Materi: ${kisiList.join(', ')}
+Tingkat Kesulitan: ${tingkatKesulitan}
+
+WAJIB Mengikuti Format JSON Presisi Berikukut:
+{
+  "soal": [
+    {
+      "nomor": 1,
+      "tipe": "pg",
+      "pertanyaan": "...",
+      "opsi": {
+        "a": "...",
+        "b": "...",
+        "c": "...",
+        "d": "..."
+      },
+      "jawaban": "a",
+      "pembahasan": "..."
+    },
+    {
+      "nomor": 1,
+      "tipe": "esai",
+      "pertanyaan": "...",
+      "jawaban": "...",
+      "pembahasan": "..."
+    }
+  ]
+}
+
+PENTING:
+- Keluarkan HANYA string JSON murni tanpa pembungkus markdown (\`\`\`json ... \`\`\`).
+- Nomor PG dimulai dari 1 sampai ${jumlahPG}.
+- Nomor Esai dimulai dari 1 sampai ${jumlahEsai}.
+- Semua opsi A, B, C, D dan jawaban harus akurat dan mendidik.
+`;
+
+                const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "meta/llama-3.1-70b-instruct",
+                        messages: [
+                            { role: "system", content: "Anda adalah pakar pembuat soal kurikulum SD. Keluarkan hanya JSON terstruktur tanpa teks tambahan." },
+                            { role: "user", content: prompt }
+                        ],
+                        temperature: 0.5,
+                        max_tokens: 4096
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || 'Gagal menghubungi NVIDIA API');
+                }
+
+                const responseText = data.choices[0].message.content.trim();
+                const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+
+                if (!jsonMatch) {
+                    throw new Error('Format respon AI tidak valid JSON');
+                }
+
+                const soalJson = JSON.parse(jsonMatch[0]);
+                soalData = soalJson.soal || [];
+                editMode = false;
+
+                renderSoal();
+                updateSoalInfo();
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p style="color: var(--danger); font-weight: 600;">❌ Terjadi Kesalahan: ${error.message}</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Periksa kembali NVIDIA API Key Anda dan coba lagi.</p>
+                    </div>
+                `;
+                console.error('Error:', error);
+            }
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.getElementById('editAnswerBtn').textContent = editMode ? '💾 Simpan Perubahan' : '✏️ Edit Jawaban';
+            renderSoal();
+        }
+
+        function renderSoal() {
+            const container = document.getElementById('soalContainer');
+            const tampilJawaban = document.getElementById('tampilkanJawaban').checked;
+            const tampilPembahasan = document.getElementById('tampilkanPembahasan').checked;
+            const mataPelajaran = document.getElementById('mataPelajaranDropdown').value;
+            const kelasVal = document.getElementById('kelasDropdown').value;
+
+            const pgList = soalData.filter(s => s.tipe === 'pg');
+            const esaiList = soalData.filter(s => s.tipe === 'esai');
+
+            let html = `
+                <div class="pts-header-box">
+                    <div class="pts-title">PENILAIAN TENGAH SEMESTER (PTS / UTS)</div>
+                    <div class="pts-subtitle">MATA PELAJARAN: ${mataPelajaran.toUpperCase()} <br> KELAS ${kelasVal} SD / MI</div>
+                    
+                    <div class="identitas-grid">
+                        <div><strong>Nama:</strong> ....................................</div>
+                        <div><strong>Kelas:</strong> ${kelasVal}</div>
+                        <div><strong>No. Absen:</strong> .........</div>
+                        <div><strong>Nilai:</strong> .........</div>
+                    </div>
+
+                    <div class="petunjuk-box">
+                        <strong>📌 Petunjuk Mengerjakan:</strong>
+                        <ol>
+                            <li>Tuliskan nama dan nomor absenmu pada kolom yang telah disediakan!</li>
+                            <li>Bacalah setiap soal dengan teliti sebelum menjawab!</li>
+                            <li>Untuk Soal Pilihan Ganda, berilah tanda silang (X) pada huruf A, B, C, atau D pada jawaban yang paling benar!</li>
+                            <li>Untuk Soal Esai, jawablah pertanyaan dengan singkat, jelas, dan benar!</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+
+            if (pgList.length > 0) {
+                html += `<div class="section-badge">BAGIAN A. PILIHAN GANDA (${pgList.length} SOAL)</div>`;
+                pgList.forEach((soal, idx) => {
+                    html += `
+                        <div class="soal-item">
+                            <div class="soal-header">
+                                <span class="soal-no">${idx + 1}.</span>
+                            </div>
+                            <div class="soal-pertanyaan">${soal.pertanyaan}</div>
+                            <div class="opsi-grid">
+                                ${Object.entries(soal.opsi).map(([kunci, teks]) => `
+                                    <div class="opsi ${tampilJawaban && soal.jawaban.toLowerCase() === kunci.toLowerCase() ? 'jawaban-benar' : ''}">
+                                        <strong>${kunci.toUpperCase()}.</strong> ${teks}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            ${tampilJawaban || editMode ? `
+                                <div class="jawaban-section">
+                                    <div class="jawaban-label">Kunci Jawaban</div>
+                                    ${editMode ? `
+                                        <input type="text" value="${soal.jawaban}" onchange="updateSoalAnswer(${soalData.indexOf(soal)}, this.value)">
+                                    ` : `
+                                        <div class="jawaban-text">Jawaban Benar: <strong>${soal.jawaban.toUpperCase()}</strong></div>
+                                    `}
+                                </div>
+                            ` : ''}
+                            ${tampilPembahasan && soal.pembahasan ? `
+                                <div class="pembahasan"><strong>Pembahasan:</strong> ${soal.pembahasan}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            if (esaiList.length > 0) {
+                html += `<div class="section-badge" style="background:#15803d; margin-top:25px;">BAGIAN B. ESAI / URAIAN (${esaiList.length} SOAL)</div>`;
+                esaiList.forEach((soal, idx) => {
+                    html += `
+                        <div class="soal-item">
+                            <div class="soal-header">
+                                <span class="soal-no" style="color:#15803d;">${idx + 1}.</span>
+                            </div>
+                            <div class="soal-pertanyaan">${soal.pertanyaan}</div>
+                            <div style="min-height: 50px; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 10px; font-style: italic; color: #94a3b8; font-size: 12px;">
+                                [ Ruang Jawaban Siswa ]
+                            </div>
+                            ${tampilJawaban || editMode ? `
+                                <div class="jawaban-section">
+                                    <div class="jawaban-label">Kunci Jawaban / Pedoman Penskoran</div>
+                                    ${editMode ? `
+                                        <input type="text" value="${soal.jawaban}" onchange="updateSoalAnswer(${soalData.indexOf(soal)}, this.value)">
+                                    ` : `
+                                        <div class="jawaban-text">${soal.jawaban}</div>
+                                    `}
+                                </div>
+                            ` : ''}
+                            ${tampilPembahasan && soal.pembahasan ? `
+                                <div class="pembahasan"><strong>Pembahasan:</strong> ${soal.pembahasan}</div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        function updateSoalInfo() {
+            const pgCount = soalData.filter(s => s.tipe === 'pg').length;
+            const esaiCount = soalData.filter(s => s.tipe === 'esai').length;
+            document.getElementById('soalInfo').textContent = `${pgCount} PG + ${esaiCount} Esai (${soalData.length} Total Soal)`;
+            document.getElementById('editAnswerBtn').style.display = soalData.length > 0 ? 'block' : 'none';
+        }
+
+        function updateSoalAnswer(idx, newAnswer) {
+            if (idx >= 0 && idx < soalData.length) {
+                soalData[idx].jawaban = newAnswer;
+            }
+        }
+
+        function printSoal() {
+            if (soalData.length === 0) {
+                alert('Generate soal terlebih dahulu sebelum mencetak');
+                return;
+            }
+            window.print();
+        }
+
+        function exportPDF() {
+            if (soalData.length === 0) {
+                alert('Generate soal terlebih dahulu');
+                return;
+            }
+
+            const mataPelajaran = document.getElementById('mataPelajaranDropdown').value;
+            const kelas = document.getElementById('kelasDropdown').value;
+            const element = document.getElementById('soalContainer');
+
+            const opt = {
+                margin: 10,
+                filename: `Soal_PTS_${mataPelajaran}_Kelas${kelas}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Event listeners
+        document.getElementById('tampilkanJawaban').addEventListener('change', () => {
+            if (!editMode && soalData.length > 0) renderSoal();
+        });
+        document.getElementById('tampilkanPembahasan').addEventListener('change', () => {
+            if (!editMode && soalData.length > 0) renderSoal();
+        });
+    </script>
+</body>
+</html>
