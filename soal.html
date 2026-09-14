@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal UTS PJOK Kelas 3 SD - A4 Fit</title>
+    <style>
+        :root {
+            --font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: var(--font-size);
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Toolbar Kontrol */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-font { background-color: #fff; color: #333; border: 1px solid #ccc; }
+        .btn-font:hover { background-color: #e2e2e2; }
+
+        .btn-print { background-color: #f39c12; color: white; }
+        .btn-print:hover { background-color: #d68910; }
+
+        .btn-key { background-color: #16a085; color: white; }
+        .btn-key:hover { background-color: #117a65; }
+
+        /* Header Soal */
+        .header-soal {
+            background-color: #008955;
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            margin: -30px -30px 20px -30px;
+        }
+
+        .header-soal h1 { margin: 0; font-size: 1.5em; text-transform: uppercase; }
+        .header-soal p { margin: 5px 0 0 0; font-size: 0.9em; opacity: 0.9; }
+
+        /* Identitas Siswa */
+        .identitas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #f8fdfa;
+            padding: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+        }
+        .identitas div { display: flex; }
+        .identitas label { font-weight: bold; width: 100px; color: #008955; }
+        .identitas span { flex-grow: 1; border-bottom: 1px dotted #999; }
+
+        /* Petunjuk */
+        .petunjuk {
+            background-color: #fff8e1;
+            border-left: 5px solid #ffc107;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+        }
+        .petunjuk h4 { margin: 0 0 5px 0; color: #b78a00; }
+        .petunjuk ul { margin: 0; padding-left: 20px; }
+
+        /* Konten Soal */
+        .section-title {
+            background-color: #008955;
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .soal-item { margin-bottom: 15px; break-inside: avoid; }
+        .soal-teks { margin-bottom: 5px; font-weight: 500; }
+        .opsi { list-style: none; padding-left: 15px; margin: 0; }
+        .opsi li { margin-bottom: 5px; }
+        
+        .esai-box {
+            border: 1px dashed #999;
+            height: 90px;
+            margin-top: 5px;
+            border-radius: 6px;
+        }
+
+        /* Kunci Jawaban */
+        .kunci-jawaban {
+            display: none;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8f8f5;
+            border: 2px solid #16a085;
+            border-radius: 8px;
+        }
+        .kunci-jawaban h3 { color: #117a65; margin-top: 0; border-bottom: 1px solid #117a65; padding-bottom: 10px;}
+        .kunci-jawaban ul { list-style: none; padding: 0; }
+        .kunci-jawaban li { margin-bottom: 10px; }
+
+        /* =========================================
+           MODE CETAK (PRINT) - OPTIMALISASI KERTAS A4
+           ========================================= */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1cm; /* Margin tipis agar muat banyak */
+            }
+
+            body { 
+                background: none; 
+                padding: 0; 
+                color: #000; 
+                font-size: 11pt; /* Ukuran font standar cetak */
+            }
+            
+            .container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; }
+            .toolbar, .btn-key { display: none !important; }
+            
+            /* Header Ringkas */
+            .header-soal { 
+                color: #000; 
+                background-color: transparent; 
+                border-bottom: 2px solid #000; 
+                padding: 0 0 10px 0; 
+                margin: 0 0 15px 0;
+            }
+            .header-soal h1 { font-size: 14pt; }
+            .header-soal p { color: #000; font-size: 10pt; }
+            
+            /* Identitas Ringkas */
+            .identitas { 
+                border: 1px solid #000; 
+                background: transparent; 
+                padding: 8px; 
+                margin-bottom: 12px; 
+                gap: 5px 15px;
+            }
+            .identitas label { color: #000; font-size: 10pt; width: 80px;}
+            
+            /* Petunjuk Ringkas */
+            .petunjuk { 
+                border: 1px solid #000; 
+                background: transparent; 
+                padding: 8px; 
+                margin-bottom: 15px;
+            }
+            .petunjuk h4 { color: #000; }
+            
+            /* Judul Bagian */
+            .section-title { 
+                background: transparent; 
+                color: #000; 
+                border: 1px solid #000; 
+                padding: 3px 10px; 
+                border-radius: 0;
+                margin-bottom: 10px;
+            }
+
+            /* BIKIN PILIHAN GANDA JADI 2 KOLOM */
+            .bagian-pg {
+                column-count: 2;
+                column-gap: 25px;
+            }
+
+            /* Kotak Esai Diperkecil */
+            .esai-box { 
+                border: 1px solid #000; 
+                height: 50px; /* Diperpendek agar hemat ruang */
+            }
+            
+            .kunci-jawaban { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Toolbar Interaktif -->
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <strong>Ukuran Teks:</strong>
+                <button class="btn-font" onclick="changeFontSize(-1)">A-</button>
+                <button class="btn-font" onclick="resetFontSize()">Reset</button>
+                <button class="btn-font" onclick="changeFontSize(1)">A+</button>
+            </div>
+            <div class="toolbar-group">
+                <button class="btn-print" onclick="window.print()">🖨️ Cetak Soal</button>
+                <button class="btn-key" id="btnToggleKey" onclick="toggleKey()">🔑 Tampilkan Kunci Jawaban</button>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header-soal">
+            <h1>Penilaian Tengah Semester (PTS / UTS)</h1>
+            <p>MATA PELAJARAN: PJOK | KELAS III (TIGA) SD/MI</p>
+        </div>
+
+        <!-- Identitas -->
+        <div class="identitas">
+            <div><label>Nama</label><span></span></div>
+            <div><label>No. Absen</label><span></span></div>
+            <div><label>Kelas</label><span></span></div>
+            <div><label>Nilai</label><span></span></div>
+        </div>
+
+        <!-- Petunjuk -->
+        <div class="petunjuk">
+            <h4>Petunjuk Mengerjakan:</h4>
+            <ul>
+                <li>Tulislah nama dan nomor absenmu pada kolom yang telah disediakan!</li>
+                <li>Bacalah setiap soal dengan teliti sebelum menjawab!</li>
+                <li>Untuk Bagian A, berilah tanda silang (X) pada huruf A, B, atau C!</li>
+                <li>Untuk Bagian B, jawablah pertanyaan dengan singkat, jelas, dan benar!</li>
+            </ul>
+        </div>
+
+        <!-- Bagian A -->
+        <div class="section-title">BAGIAN A - Pilihan Ganda (10 Soal)</div>
+        
+        <!-- Wrapper Kolom Pilihan Ganda -->
+        <div class="bagian-pg">
+            <div class="soal-item">
+                <div class="soal-teks">1. Gerakan tubuh yang mengakibatkan terjadinya perpindahan tempat dari satu titik ke titik lain dinamakan gerak...</div>
+                <ul class="opsi">
+                    <li>A. Non-lokomotor</li>
+                    <li>B. Lokomotor</li>
+                    <li>C. Manipulatif</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">2. Saat melakukan gerakan memutar pinggang atau menggelengkan kepala, posisi badan tetap berada di tempat. Gerakan ini termasuk contoh gerak...</div>
+                <ul class="opsi">
+                    <li>A. Lokomotor</li>
+                    <li>B. Non-lokomotor</li>
+                    <li>C. Manipulatif</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">3. Perbedaan utama antara gerakan melompat dan meloncat terletak pada...</div>
+                <ul class="opsi">
+                    <li>A. Arah gerakan</li>
+                    <li>B. Jumlah kaki tumpuan</li>
+                    <li>C. Kekuatan tangan</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">4. Gerakan memindahkan tubuh ke depan atau ke atas dengan tolakan satu kaki dinamakan...</div>
+                <ul class="opsi">
+                    <li>A. Melompat</li>
+                    <li>B. Meloncat</li>
+                    <li>C. Berlari</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">5. Gerakan membengkokkan bagian tubuh seperti lutut atau siku disebut gerakan...</div>
+                <ul class="opsi">
+                    <li>A. Mengayun</li>
+                    <li>B. Menekuk</li>
+                    <li>C. Memutar</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">6. Ketika melakukan gerakan meloncat, tumpuan yang digunakan untuk menolak tubuh adalah...</div>
+                <ul class="opsi">
+                    <li>A. Satu kaki</li>
+                    <li>B. Kedua kaki secara bersamaan</li>
+                    <li>C. Kedua tangan</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">7. Contoh gerakan lokomotor yang sering kita lakukan sehari-hari adalah...</div>
+                <ul class="opsi">
+                    <li>A. Berlari dan melompat</li>
+                    <li>B. Menekuk lutut dan mengayun tangan</li>
+                    <li>C. Menggelengkan kepala dan memutar pinggang</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">8. Menggerakkan tangan ke depan dan ke belakang secara teratur saat berdiri dinamakan gerak...</div>
+                <ul class="opsi">
+                    <li>A. Menekuk</li>
+                    <li>B. Mengayun</li>
+                    <li>C. Melangkah</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">9. Gerakan memindahkan kaki ke arah depan, samping, atau belakang disebut...</div>
+                <ul class="opsi">
+                    <li>A. Melangkah</li>
+                    <li>B. Menekuk</li>
+                    <li>C. Mengayun</li>
+                </ul>
+            </div>
+
+            <div class="soal-item">
+                <div class="soal-teks">10. Sebelum dorongan melompat ke atas, lutut ditekuk sedikit bertujuan untuk...</div>
+                <ul class="opsi">
+                    <li>A. Keseimbangan & tenaga dorongan</li>
+                    <li>B. Menahan napas</li>
+                    <li>C. Mempercepat pendaratan</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Akhir Kolom Pilihan Ganda -->
+
+        <br>
+        <!-- Bagian B -->
+        <div class="section-title">BAGIAN B - Esai (3 Soal)</div>
+
+        <div class="soal-item">
+            <div class="soal-teks">1. Jelaskan perbedaan antara gerak lokomotor dan gerak non-lokomotor, lalu tuliskan masing-masing 2 contoh gerakannya!</div>
+            <div class="esai-box"></div>
+        </div>
+
+        <div class="soal-item">
+            <div class="soal-teks">2. Jelaskan perbedaan cara melakukan gerakan melompat dan meloncat!</div>
+            <div class="esai-box"></div>
+        </div>
+
+        <div class="soal-item">
+            <div class="soal-teks">3. Sebutkan 3 contoh gerakan menekuk atau mengayun yang biasa dilakukan saat pemanasan sebelum berolahraga!</div>
+            <div class="esai-box"></div>
+        </div>
+
+        <!-- Kunci Jawaban -->
+        <div class="kunci-jawaban" id="kunciJawaban">
+            <h3>Kunci Jawaban & Pembahasan</h3>
+            <p><strong>Bagian A (Pilihan Ganda)</strong></p>
+            <ul>
+                <li><strong>1. B</strong> (Lokomotor: Gerakan berpindah tempat)</li>
+                <li><strong>2. B</strong> (Non-lokomotor: Gerakan tanpa berpindah tempat)</li>
+                <li><strong>3. B</strong> (Jumlah kaki tumpuan: melompat 1 kaki, meloncat 2 kaki)</li>
+                <li><strong>4. A</strong> (Melompat)</li>
+                <li><strong>5. B</strong> (Menekuk)</li>
+                <li><strong>6. B</strong> (Kedua kaki secara bersamaan)</li>
+                <li><strong>7. A</strong> (Berlari dan melompat)</li>
+                <li><strong>8. B</strong> (Mengayun)</li>
+                <li><strong>9. A</strong> (Melangkah)</li>
+                <li><strong>10. A</strong> (Menjaga keseimbangan dan tenaga dorongan)</li>
+            </ul>
+            <p><strong>Bagian B (Esai)</strong></p>
+            <ul>
+                <li><strong>1.</strong> Gerak Lokomotor berpindah tempat (Contoh: Berjalan, berlari). Gerak Non-Lokomotor tidak berpindah tempat (Contoh: Mengayun tangan, memutar pinggang).</li>
+                <li><strong>2.</strong> Melompat menggunakan <strong>satu kaki</strong> tumpuan. Meloncat menggunakan <strong>dua kaki</strong> secara bersamaan.</li>
+                <li><strong>3.</strong> Menekuk lutut ke dada, menekuk siku, mengayunkan lengan.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        let currentFontSize = 16;
+        
+        function changeFontSize(delta) {
+            currentFontSize += delta;
+            if (currentFontSize < 12) currentFontSize = 12;
+            if (currentFontSize > 24) currentFontSize = 24;
+            document.documentElement.style.setProperty('--font-size', currentFontSize + 'px');
+        }
+
+        function resetFontSize() {
+            currentFontSize = 16;
+            document.documentElement.style.setProperty('--font-size', '16px');
+        }
+
+        function toggleKey() {
+            const keyDiv = document.getElementById('kunciJawaban');
+            const btn = document.getElementById('btnToggleKey');
+            
+            if (keyDiv.style.display === 'none' || keyDiv.style.display === '') {
+                keyDiv.style.display = 'block';
+                btn.innerHTML = '🙈 Sembunyikan Kunci Jawaban';
+                btn.style.backgroundColor = '#c0392b';
+                keyDiv.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                keyDiv.style.display = 'none';
+                btn.innerHTML = '🔑 Tampilkan Kunci Jawaban';
+                btn.style.backgroundColor = '#16a085';
+            }
+        }
+    </script>
+</body>
+</html>
