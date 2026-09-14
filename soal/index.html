@@ -701,7 +701,8 @@
             <!-- API Key (Ollama / NVIDIA) -->
             <div class="form-group">
                 <label>API Key <span style="color:var(--text-secondary);font-weight:400;">(<span id="apiKeyProviderName">Ollama</span>)</span></label>
-                <input type="password" id="apiKeyInput" placeholder="Tempel API key di sini...">
+                <input type="password" id="apiKeyInput" placeholder="Kosongkan jika env sudah di-set di Vercel...">
+                <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">ⓘ Boleh dikosongkan jika <code>OLLAMA_API_KEY</code>/<code>NVIDIA_API_KEY</code> sudah di-set di lingkungan Vercel.</p>
             </div>
 
             <!-- [NEW] Pengaturan Proxy AI (Vercel) -->
@@ -715,7 +716,7 @@
             </div>
             <div class="form-group">
                 <label>Endpoint Proxy <span style="color:var(--text-secondary);font-weight:400;">(URL Vercel)</span></label>
-                <input type="text" id="proxyUrl" value="https://home-phi-woad.vercel.app/api/ai" placeholder="https://home-phi-woad.vercel.app/api/ai">
+                <input type="text" id="proxyUrl" value="https://home-z2ox.vercel.app/api/ai" placeholder="https://home-z2ox.vercel.app/api/ai">
                 <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">ⓘ Halaman ini di GitHub Pages — wajib isi URL <strong>lengkap</strong> Vercel Anda (bukan /api/ai relatif).</p>
             <div class="form-group">
                 <label>Model AI</label>
@@ -1850,8 +1851,8 @@
             const tingkatKesulitan = document.getElementById('tingkatKesulitan').value;
 
             if (!apiKey) {
-                alert('Masukkan API key AI terlebih dahulu (Ollama/NVIDIA).\nAtau gunakan tombol Manual di bawah.');
-                return;
+                // Key boleh kosong: proxy Vercel akan memakai env OLLAMA_API_KEY / NVIDIA_API_KEY
+                // Jika kedua-duanya juga kosong, proxy akan mengembalikan pesan 401 yang jelas.
             }
             if (!proxyUrl || proxyUrl.indexOf('nama-proyek.vercel.app') !== -1) {
                 alert('Isi Endpoint Proxy dengan URL Vercel Anda terlebih dahulu.\nSetelah deploy, URL berbentuk: https://<nama-proyek>.vercel.app/api/ai\n(Panduan: file VERCEL_DEPLOY.md di repo).');
