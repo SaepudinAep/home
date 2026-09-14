@@ -871,6 +871,12 @@
         let esaiBaris = 4;
 
         // ─────────────────────────────────────────────
+        // URL proxy AI bawaan — tidak perlu diisi manual.
+        // Jika halaman dibuka dari domain Vercel, otomatis pakai /api/ai relatif.
+        // ─────────────────────────────────────────────
+        const AI_PROXY_DEFAULT = 'https://home-z2ox.vercel.app/api/ai';
+
+        // ─────────────────────────────────────────────
         // [NEW] Sanitasi HTML untuk mencegah XSS
         // Semua teks dari AI harus dilewatkan fungsi ini
         // ─────────────────────────────────────────────
@@ -1821,6 +1827,9 @@
         }
 
         function loadAISettings() {
+            // Default bawaan: /api/ai jika halaman di Vercel, atau URL proxy tetap
+            const onVercel = window.location && window.location.hostname && window.location.hostname.endsWith('.vercel.app');
+            document.getElementById('proxyUrl').value = onVercel ? '/api/ai' : AI_PROXY_DEFAULT;
             try {
                 const s = JSON.parse(localStorage.getItem('ai_settings') || '{}');
                 if (s.provider) document.getElementById('aiProvider').value = s.provider;
@@ -1854,10 +1863,8 @@
                 // Key boleh kosong: proxy Vercel akan memakai env OLLAMA_API_KEY / NVIDIA_API_KEY
                 // Jika kedua-duanya juga kosong, proxy akan mengembalikan pesan 401 yang jelas.
             }
-            if (!proxyUrl || proxyUrl.indexOf('nama-proyek.vercel.app') !== -1) {
-                alert('Isi Endpoint Proxy dengan URL Vercel Anda terlebih dahulu.\nSetelah deploy, URL berbentuk: https://<nama-proyek>.vercel.app/api/ai\n(Panduan: file VERCEL_DEPLOY.md di repo).');
-                return;
-            }
+            // Endpoint Proxy otomatis: ambil dari field; jika kosong, pakai bawaan AI_PROXY_DEFAULT
+            const effectiveProxy = proxyUrl || AI_PROXY_DEFAULT;
 
             if (!mataPelajaran || !kelas) {
                 alert('Pilih kelas dan mata pelajaran terlebih dahulu');
@@ -1925,7 +1932,7 @@ PENTING:
 - Semua opsi A, B, C, D dan jawaban harus akurat dan mendidik.
 `;
 
-                const response = await fetch(proxyUrl, {
+                const response = await fetch(effectiveProxy, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
