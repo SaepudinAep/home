@@ -5,7 +5,7 @@
     <title>Generator Worksheet Menulis - Robopanda</title>
     <style>
         /* CSS UNTUK TAMPILAN EDITOR (TIDAK IKUT DICETAK) */
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
         
         .editor-panel {
             max-width: 800px;
@@ -16,7 +16,29 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .editor-panel h3 { margin-top: 0; color: #1a73e8; }
+        .editor-panel h3 { margin-top: 0; color: #4d97ff; }
+
+        /* Tombol kembali ke Home (tidak ikut cetak) */
+        .home-bar {
+            max-width: 800px;
+            margin: 0 auto 15px auto;
+            background: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: flex-end;
+        }
+        .home-bar a {
+            background: #ffab19;
+            color: #fff;
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .home-bar a:hover { background: #4d97ff; }
         
         textarea {
             width: 100%;
@@ -30,7 +52,7 @@
         }
 
         .btn-print {
-            background: #1a73e8;
+            background: #4d97ff;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -40,7 +62,7 @@
             font-weight: bold;
         }
 
-        .btn-print:hover { background: #1557b0; }
+        .btn-print:hover { background: #00c896; }
 
         /* CSS UNTUK WORKSHEET (FORMAT A4) */
         .sheet { 
@@ -92,7 +114,7 @@
 
         /* PENGATURAN CETAK */
         @media print {
-            .editor-panel { display: none; }
+            .home-bar, .editor-panel { display: none; }
             body { background: none; padding: 0; }
             .sheet { box-shadow: none; margin: 0; width: 100%; }
             .story-box { background: #f9f9f9 !important; }
@@ -101,6 +123,10 @@
     </style>
 </head>
 <body>
+
+    <div class="home-bar">
+        <a href="index.html">🏠 Kembali ke Home</a>
+    </div>
 
     <div class="editor-panel">
         <h3>Writing Editor 📝</h3>

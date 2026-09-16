@@ -9,7 +9,7 @@
 <style>
   body { font-family:'Roboto',sans-serif; margin:0; background:#f5f5f5; }
   header {
-    background: linear-gradient(90deg,#4d97ff,#ffab19);
+    background: linear-gradient(135deg,#4d97ff,#00c896);
     color:#fff; padding:15px;
     display:flex; justify-content:space-between; align-items:center;
     flex-wrap:wrap;
@@ -43,12 +43,38 @@
     padding:10px 20px; border-radius:6px; cursor:pointer;
     font-weight:bold; margin-top:10px;
   }
-  button:hover { background:#ffab19; }
+  button:hover { background:#00c896; }
 
   @media (max-width:600px){
     header h1 { font-size:18px; }
     li { flex-direction:column; align-items:flex-start; }
     .controls { margin-top:6px; }
+  }
+
+  /* Wadah render tersembunyi untuk DOCX / Excel (dipakai jsPDF.html) */
+  .render-holder {
+    position:absolute; left:-12000px; top:0;
+    width:794px; background:#fff; color:#000;
+  }
+  #docxRender {
+    font-family:'Times New Roman', serif; font-size:16px; line-height:1.5;
+  }
+  #docxRender p { margin:0 0 12px; }
+  #docxRender table, #docxRender td, #docxRender th {
+    border:1px solid #000; border-collapse:collapse;
+  }
+  #docxRender td, #docxRender th { padding:4px 6px; }
+  #xlsxRender {
+    width:1100px; font-family:Arial, sans-serif; font-size:12px;
+  }
+  #xlsxRender table { border-collapse:collapse; width:100%; }
+  #xlsxRender td, #xlsxRender th {
+    border:1px solid #000; padding:4px 6px; font-size:11px;
+    word-break:break-word; vertical-align:top;
+  }
+  #xlsxRender th { background:#eee; font-weight:bold; }
+  #xlsxRender .sheet-title {
+    font-size:16px; font-weight:bold; margin:0 0 10px;
   }
 </style>
 </head>
@@ -74,7 +100,29 @@
     <ul id="txtList"></ul>
     <button onclick="convertTextsToPDF()">Convert Teks ke PDF</button>
   </section>
+
+  <!-- DOCX to PDF -->
+  <section id="docx">
+    <h2>Ubah DOCX (Word) ke PDF</h2>
+    <input type="file" id="docxFiles" multiple accept=".docx" onchange="showDocx()">
+    <p style="font-size:12px; color:#777; margin:4px 0 0;">
+      ⓘ Mendukung <strong>.docx</strong> (Word 2007+). Format lama <em>.doc</em> tidak didukung.
+    </p>
+    <ul id="docxList"></ul>
+    <button onclick="convertDocxToPDF()">Convert DOCX ke PDF</button>
+  </section>
+
+  <!-- Excel to PDF -->
+  <section id="excel">
+    <h2>Ubah Excel (XLSX / XLS) ke PDF</h2>
+    <input type="file" id="xlsxFiles" multiple accept=".xlsx,.xls" onchange="showXlsx()">
+    <ul id="xlsxList"></ul>
+    <button onclick="convertXlsxToPDF()">Convert Excel ke PDF</button>
+  </section>
 </main>
+
+<div id="docxRender" class="render-holder"></div>
+<div id="xlsxRender" class="render-holder"></div>
 
 <script>
 /* --- Image to PDF --- */
@@ -131,6 +179,94 @@ async function convertTextsToPDF(){
     y=20;
   }
   doc.save("texts.pdf");
+}
+
+/* --- DOCX → PDF --- */
+let docxFiles=[];
+function showDocx(){
+  docxFiles=Array.from(document.getElementById('docxFiles').files);
+  renderList(docxFiles,'docxList');
+}
+
+async function convertDocxToPDF(){
+  if(docxFiles.length<1){ alert("Pilih minimal 1 file DOCX!"); return; }
+  try{
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js");
+  }catch(e){
+    alert("Gagal memuat library Mammoth. Cek koneksi internet, lalu coba lagi.");
+    return;
+  }
+  const {jsPDF}=window.jspdf;
+  const merged=await PDFLib.PDFDocument.create();
+  const renderBox=document.getElementById('docxRender');
+  for(const f of docxFiles){
+    const buf=await f.arrayBuffer();
+    const {value: html}=await mammoth.convertToHtml({arrayBuffer: buf});
+    renderBox.innerHTML=html;
+    const doc=new jsPDF({unit:'mm', format:'a4'});
+    await doc.html(renderBox,{
+      x:12, y:12, width:186, windowWidth:794,
+      autoPaging:'text',
+      html2canvas:{scale:2, backgroundColor:'#ffffff'}
+    });
+    const loaded=await PDFLib.PDFDocument.load(doc.output('arraybuffer'));
+    const pages=await merged.copyPages(loaded, loaded.getPageIndices());
+    pages.forEach(p=>merged.addPage(p));
+  }
+  const bytes=await merged.save();
+  downloadPDF(bytes,"docx-converted.pdf");
+}
+
+/* --- Excel (XLSX/XLS) → PDF --- */
+let xlsxFiles=[];
+function showXlsx(){
+  xlsxFiles=Array.from(document.getElementById('xlsxFiles').files);
+  renderList(xlsxFiles,'xlsxList');
+}
+
+async function convertXlsxToPDF(){
+  if(xlsxFiles.length<1){ alert("Pilih minimal 1 file Excel!"); return; }
+  try{
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
+  }catch(e){
+    alert("Gagal memuat library SheetJS. Cek koneksi internet, lalu coba lagi.");
+    return;
+  }
+  const {jsPDF}=window.jspdf;
+  const merged=await PDFLib.PDFDocument.create();
+  const renderBox=document.getElementById('xlsxRender');
+  for(const f of xlsxFiles){
+    const buf=await f.arrayBuffer();
+    const wb=XLSX.read(buf,{type:'array'});
+    for(const name of wb.SheetNames){
+      const ws=wb.Sheets[name];
+      renderBox.innerHTML='<div class="sheet-title">'+name+'</div>'+XLSX.utils.sheet_to_html(ws,{header:""});
+      const doc=new jsPDF({unit:'mm', format:'a4'});
+      await doc.html(renderBox,{
+        x:8, y:10, width:194, windowWidth:1100,
+        autoPaging:'text',
+        html2canvas:{scale:2, backgroundColor:'#ffffff'}
+      });
+      const loaded=await PDFLib.PDFDocument.load(doc.output('arraybuffer'));
+      const pages=await merged.copyPages(loaded, loaded.getPageIndices());
+      pages.forEach(p=>merged.addPage(p));
+    }
+  }
+  const bytes=await merged.save();
+  downloadPDF(bytes,"excel-converted.pdf");
+}
+
+/* --- Loader library CDN (dimuat saat dibutuhkan) --- */
+const _loadedScripts={};
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    if(_loadedScripts[src]){ resolve(); return; }
+    const s=document.createElement('script');
+    s.src=src;
+    s.onload=()=>{ _loadedScripts[src]=true; resolve(); };
+    s.onerror=()=>reject(new Error("Gagal memuat "+src));
+    document.head.appendChild(s);
+  });
 }
 
 /* --- Helper --- */

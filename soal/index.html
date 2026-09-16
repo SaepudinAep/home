@@ -13,8 +13,8 @@
         }
 
         :root {
-            --primary: #2563eb;
-            --success: #16a34a;
+            --primary: #4d97ff;
+            --success: #00c896;
             --danger: #dc2626;
             --warning: #ea580c;
             --bg-light: #f9fafb;
@@ -77,6 +77,22 @@
             align-items: center;
             flex-wrap: wrap;
             background: var(--bg-light);
+        }
+
+        /* Tombol kembali ke Home */
+        .home-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 8px 14px;
+            background: #ffab19;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .home-link:hover {
+            background: #4d97ff;
         }
 
         /* [FIX] soal-container sekarang pakai CSS variable agar dark mode berfungsi */
@@ -344,7 +360,7 @@
         }
 
         .opsi.jawaban-benar {
-            border-color: #16a34a;
+            border-color: #00c896;
             background: #f0fdf4;
             font-weight: 600;
             color: #15803d;
@@ -359,7 +375,7 @@
         .jawaban-label {
             font-size: 11px;
             font-weight: 700;
-            color: #16a34a;
+            color: #00c896;
             text-transform: uppercase;
         }
 
@@ -367,7 +383,7 @@
             background: #f0fdf4;
             padding: 8px 12px;
             border-radius: 4px;
-            border-left: 3px solid #16a34a;
+            border-left: 3px solid #00c896;
             font-size: 13px;
         }
 
@@ -696,6 +712,7 @@
     <div class="container">
         <!-- SIDEBAR -->
         <div class="sidebar">
+            <a href="../index.html" class="home-link">🏠 ⬅ Kembali ke Home</a>
             <h2>Setup Generator Soal</h2>
 
             <!-- API Key (Ollama / NVIDIA) -->
@@ -814,7 +831,7 @@
                 <button class="btn-primary" onclick="generateSoal()" style="flex: 1; padding: 12px; font-weight: 600;">
                     ⚡ Generate Soal (NVIDIA AI)
                 </button>
-                <button class="btn-primary" onclick="generateSoalManual()" style="flex: 1; padding: 12px; font-weight: 600; background: #16a34a; margin-top: 8px;">
+                <button class="btn-primary" onclick="generateSoalManual()" style="flex: 1; padding: 12px; font-weight: 600; background: #00c896; margin-top: 8px;">
                     📝 Generate Soal (Manual / Tanpa API)
                 </button>
                 <p style="font-size: 11px; color: var(--text-secondary); margin-top: 6px;">Mode manual memakai bank soal lokal, tanpa NVIDIA API & bisa langsung dicetak/diunduh.</p>

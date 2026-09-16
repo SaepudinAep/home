@@ -6,8 +6,8 @@
     <title>Generator Lembar Soal - Smart & Flexible</title>
     <style>
         :root {
-            --primary: #007bff;
-            --success: #28a745;
+            --primary: #4d97ff;
+            --success: #00c896;
             --danger: #dc3545;
             --warning: #f59e0b;
             --purple: #7c3aed;
@@ -39,6 +39,34 @@
             z-index: 1000;
             flex-shrink: 0;
         }
+
+        /* ── HOME BAR ── */
+        .home-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--bg-white);
+            border-bottom: 2px solid var(--border);
+            flex-shrink: 0;
+            z-index: 1000;
+        }
+        .home-bar h1 {
+            font-size: 15px;
+            margin: 0;
+            color: var(--text);
+        }
+        .home-bar a {
+            background: #ffab19;
+            color: #fff;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .home-bar a:hover { background: #4d97ff; }
         .tab-btn {
             flex: 1;
             padding: 14px 8px;
@@ -268,7 +296,7 @@
         /* ── PRINT ── */
         @media print {
             body { background: white; height: auto; overflow: visible; }
-            .tabs, .action-bar, #input-panel, #prompt-panel { display: none !important; }
+            .home-bar, .tabs, .action-bar, #input-panel, #prompt-panel { display: none !important; }
             .content { padding: 0; overflow: visible; }
             .panel { padding: 0; }
             #preview-panel { display: flex !important; }
@@ -286,6 +314,12 @@
     </style>
 </head>
 <body>
+
+<!-- ── HOME BAR ── -->
+<div class="home-bar">
+    <h1>Generator Lembar Soal</h1>
+    <a href="index.html">🏠 Home</a>
+</div>
 
 <!-- ── TABS ── -->
 <div class="tabs">
@@ -703,7 +737,7 @@ ATURAN KETAT (PENGHILANGAN KESALAHAN):
 14. Jika aku belum menyebutkan rincian jumlah soal (berapa PG, Isian, atau Uraian yang harus dibuat), JANGAN langsung membuat soal. WAJIB tanyakan terlebih dahulu kepadaku berapa jumlah soal untuk masing-masing bagian tersebut.
 
 ${bagianA}${bagianB}${bagianC}
-Mulai sekarang, patuhi format di atas. ${(pg === 0 && isian === 0 && uraian === 0) ? 'Tanyakan kepadaku berapa jumlah soal PG, Isian, dan Uraian yang ingin dibuat!' : 'Hasilkan soal sesuai format di atas tanpa basa-basi.'}`;
+Mulai sekarang, ${(pg === 0 && isian === 0 && uraian === 0) ? 'patuhi format di atas dan tanyakan kepadaku berapa jumlah soal PG, Isian, dan Uraian yang ingin dibuat.' : 'hasilkan soal sesuai format di atas tanpa basa-basi.'}`;
 
         document.getElementById('promptOutput').value = prompt.trim();
     }

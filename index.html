@@ -2,34 +2,89 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Teaching Tools Hub — koleksi alat penunjang mengajar dalam satu halaman, nyaman diakses dari HP, tablet, dan desktop.">
+  <meta name="theme-color" content="#4d97ff">
   <title>Teaching Tools Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Roboto', sans-serif; margin:0; background:#fdfdfd; color:#333; }
-    header { background: linear-gradient(90deg,#4d97ff,#00c896); color:white; padding:40px; text-align:center; }
-    header h1 { font-family:'Fredoka One',cursive; font-size:42px; margin:0; }
-    header p { font-size:18px; margin-top:10px; }
-    .hero { text-align:center; padding:40px 20px; }
-    .hero h2 { font-size:28px; color:#4d97ff; }
-    .grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; padding:40px; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: #fdfdfd;
+      color: #333;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4d97ff 0%, #00c896 100%);
+      color: white;
+      padding: clamp(28px, 6vw, 48px) 16px;
+      text-align: center;
+    }
+    header h1 { font-family: 'Fredoka One', cursive; font-size: clamp(30px, 7vw, 46px); line-height: 1.15; margin: 0; }
+    header p  { font-size: clamp(15px, 3vw, 18px); margin-top: 10px; opacity: .95; line-height: 1.5; }
+
+    .hero { text-align: center; padding: clamp(24px, 5vw, 40px) 16px; }
+    .hero h2 { font-size: clamp(20px, 4vw, 28px); color: #4d97ff; margin: 0 0 8px; line-height: 1.3; }
+    .hero p  { font-size: clamp(14px, 3vw, 16px); color: #555; margin: 0 auto; max-width: 640px; line-height: 1.6; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 2vw, 20px);
+      padding: clamp(16px, 4vw, 40px);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
     .card {
-      display:block;
-      text-decoration:none;
-      background:#fff;
-      border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.1);
-      padding:20px;
-      text-align:center;
-      transition:transform 0.2s, background 0.2s;
-      color:#333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.05);
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.08);
+      padding: clamp(20px, 3vw, 28px) 16px;
+      min-height: 150px;
+      text-align: center;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      color: #333;
     }
-    .card:hover {
-      transform:translateY(-5px);
-      background:#f0faff;
+    .card .icon { display: block; font-size: clamp(28px, 5vw, 38px); line-height: 1; margin-bottom: 12px; }
+    .card h3 { font-family: 'Fredoka One', cursive; color: #00c896; font-size: clamp(15px, 2.5vw, 18px); margin-bottom: 8px; line-height: 1.3; }
+    .card p  { font-size: 14px; color: #555; line-height: 1.55; margin: 0; }
+
+    @media (hover: hover) {
+      .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.12); background: #f0faff; }
     }
-    .card h3 { font-family:'Fredoka One',cursive; color:#00c896; margin-bottom:10px; }
-    .card p { font-size:14px; color:#555; }
-    footer { background:#ffab19; color:#fff; text-align:center; padding:20px; margin-top:40px; }
+
+    footer { background: #ffab19; color: #fff; text-align: center; padding: 20px 16px; margin-top: 40px; font-size: 14px; }
+    footer p { margin: 0; }
+
+    /* Tablet landscape & laptop kecil */
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Tablet portrait */
+    @media (max-width: 820px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      footer { margin-top: 32px; }
+    }
+
+    /* Ponsel */
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+      footer { margin-top: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -44,18 +99,18 @@
   </section>
 
   <section class="grid">
-    <a href="math-generator.html" class="card"><h3>Math Worksheet Generator</h3><p>Buat soal matematika otomatis siap cetak.</p></a>
-    <a href="wordEditor.html" class="card"><h3>Word Editor</h3><p>Editor mini untuk membuat lembar soal dengan judul, subjudul, pilihan ganda, dan esai.</p></a>
-    <a href="handwriting.html" class="card"><h3>Handwriting Generator</h3><p>Membuat worksheet untuk tulisan tangan</p></a>
-    <a href="flashcard.html" class="card"><h3>Flashcard Maker</h3><p>Membuat kartu hafalan untuk materi pelajaran.</p></a>
-    <a href="attendance.html" class="card"><h3>Attendance</h3><p>Catat absensi siswa dengan mudah.</p></a>
-    <a href="beginner/beginner.html" class="card"><h3>Beginner</h3><p>Kumpulan materi Beginner.</p></a>
-    <a href="kiddy/kiddy.html" class="card"><h3>Kiddy</h3><p>Kumpulan materi Kiddy.</p></a>
-    <a href="homework.html" class="card"><h3>Homework Planner</h3><p>Daftar tugas dan deadline untuk siswa.</p></a>
-    <a href="rubric.html" class="card"><h3>Rubric Designer</h3><p>Membuat rubrik penilaian kinerja.</p></a>
-    <a href="merge-pdf.html" class="card"><h3>PDF Merges Tool</h3><p>Menggabungkan beberapa file PDF menjadi satu.</p></a>
-    <a href="convert-pdf.html" class="card"><h3>Image to Pdf Converter</h3><p>Mengubah file gambar / dokumen menjadi pdf</p></a>
-    <a href="report.html" class="card"><h3>Parent Report Generator</h3><p>Laporan singkat untuk orang tua.</p></a>
+    <a href="math-generator.html" class="card"><span class="icon">➗</span><h3>Math Worksheet Generator</h3><p>Buat soal matematika otomatis siap cetak.</p></a>
+    <a href="wordEditor.html" class="card"><span class="icon">✍️</span><h3>Word Editor</h3><p>Editor mini untuk membuat lembar soal dengan judul, subjudul, pilihan ganda, dan esai.</p></a>
+    <a href="handwriting.html" class="card"><span class="icon">✏️</span><h3>Handwriting Generator</h3><p>Membuat worksheet untuk tulisan tangan</p></a>
+    <a href="flashcard.html" class="card"><span class="icon">🎴</span><h3>Flashcard Maker</h3><p>Membuat kartu hafalan untuk materi pelajaran.</p></a>
+    <a href="attendance.html" class="card"><span class="icon">📋</span><h3>Attendance</h3><p>Catat absensi siswa dengan mudah.</p></a>
+    <a href="beginner/beginner.html" class="card"><span class="icon">🌱</span><h3>Beginner</h3><p>Kumpulan materi Beginner.</p></a>
+    <a href="kiddy/kiddy.html" class="card"><span class="icon">🧒</span><h3>Kiddy</h3><p>Kumpulan materi Kiddy.</p></a>
+    <a href="homework.html" class="card"><span class="icon">🗓️</span><h3>Homework Planner</h3><p>Daftar tugas dan deadline untuk siswa.</p></a>
+    <a href="rubric.html" class="card"><span class="icon">🏅</span><h3>Rubric Designer</h3><p>Membuat rubrik penilaian kinerja.</p></a>
+    <a href="merge-pdf.html" class="card"><span class="icon">📎</span><h3>PDF Merges Tool</h3><p>Menggabungkan beberapa file PDF menjadi satu.</p></a>
+    <a href="convert-pdf.html" class="card"><span class="icon">🖼️</span><h3>Image to Pdf Converter</h3><p>Mengubah file gambar / dokumen menjadi pdf</p></a>
+    <a href="report.html" class="card"><span class="icon">📊</span><h3>Parent Report Generator</h3><p>Laporan singkat untuk orang tua.</p></a>
   </section>
 
   <footer>
